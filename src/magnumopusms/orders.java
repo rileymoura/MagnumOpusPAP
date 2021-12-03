@@ -314,14 +314,13 @@ public class orders extends javax.swing.JFrame {
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(backgroundPanelLayout.createSequentialGroup()
                         .addGap(12, 12, 12)
-                        .addComponent(buttonExit)
-                        .addGap(28, 28, 28))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundPanelLayout.createSequentialGroup()
+                        .addComponent(buttonExit))
+                    .addGroup(backgroundPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(labelMOpus2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(47, Short.MAX_VALUE))
+                        .addComponent(labelMOpus2)))
+                .addGap(11, 11, 11)
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -368,12 +367,6 @@ public class orders extends javax.swing.JFrame {
 
     private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddActionPerformed
         
-        DefaultTableModel model = (DefaultTableModel) tableOrders.getModel();
-        int rowCount = model.getRowCount();
-        for (int i = rowCount -1; i >= 0; i--){
-            model.removeRow(i);
-        }
-        show_orders();
     }//GEN-LAST:event_buttonAddActionPerformed
 
     private void buttonProdsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonProdsActionPerformed
