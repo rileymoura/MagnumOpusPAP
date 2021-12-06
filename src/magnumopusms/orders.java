@@ -366,7 +366,10 @@ public class orders extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonBackActionPerformed
 
     private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddActionPerformed
-        
+        ordersAdd ordersAdd = new ordersAdd();
+        ordersAdd.setVisible(true);
+        ordersAdd.pack();
+        ordersAdd.setLocationRelativeTo(null);
     }//GEN-LAST:event_buttonAddActionPerformed
 
     private void buttonProdsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonProdsActionPerformed
