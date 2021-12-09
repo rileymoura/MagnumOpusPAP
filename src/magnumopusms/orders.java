@@ -370,6 +370,7 @@ public class orders extends javax.swing.JFrame {
         ordersAdd.setVisible(true);
         ordersAdd.pack();
         ordersAdd.setLocationRelativeTo(null);
+        this.dispose();
     }//GEN-LAST:event_buttonAddActionPerformed
 
     private void buttonProdsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonProdsActionPerformed

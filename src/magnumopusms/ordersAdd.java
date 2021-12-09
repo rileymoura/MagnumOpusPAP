@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
@@ -477,13 +479,17 @@ public class ordersAdd extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonExitActionPerformed
 
     private void buttonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBackActionPerformed
-        
+        orders orders = new orders();
+        orders.setVisible(true);
+        orders.setLocationRelativeTo(null);
+        orders.pack();
+        this.dispose();
     }//GEN-LAST:event_buttonBackActionPerformed
 
     private void tableClientsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableClientsMouseClicked
         int i = tableClients.getSelectedRow();
         TableModel model = tableClients.getModel();
-        fieldIdClient.setText((String) model.getValueAt(i, 0));
+        fieldIdClient.setText(model.getValueAt(i, 0).toString());
     }//GEN-LAST:event_tableClientsMouseClicked
 
     private void tableProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableProductsMouseClicked
@@ -509,7 +515,25 @@ public class ordersAdd extends javax.swing.JFrame {
     }//GEN-LAST:event_fieldIdOrderActionPerformed
 
     private void buttonNewOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNewOrderActionPerformed
-        // TODO add your handling code here:
+        try {
+            String query;
+            String id = fieldIdClient.getText();
+            query = "INSERT INTO encomendas (cod_cliente) VALUES ("+id+")";
+            PreparedStatement ps;
+            ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.execute();
+            
+            ResultSet rs =  ps.getGeneratedKeys();
+            int generatedKey = 0;
+            if (rs.next()){
+                generatedKey = rs.getInt(1);
+            }
+            fieldIdOrder.setText(String.valueOf(generatedKey));
+            JOptionPane.showMessageDialog(null, "Encomenda criada");
+        } catch (SQLException ex) {
+            Logger.getLogger(ordersAdd.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ex);
+        }
     }//GEN-LAST:event_buttonNewOrderActionPerformed
 
     private void fieldProcurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldProcurarActionPerformed
