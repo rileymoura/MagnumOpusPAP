@@ -44,6 +44,20 @@ public class products extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
+    public void executeSQLQueryNoMessage(String query){
+        Connection con = dbConnection.getConnection();
+        Statement st;
+        try{
+            st = con.createStatement();
+            if(st.executeUpdate(query) == 1){
+                
+            }else{
+                JOptionPane.showMessageDialog(null, "Erro! (executeSQLQueryNoMessage)");
+            }
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
     public ArrayList<Product> productsList(){
         ArrayList<Product> productsList = new ArrayList<>();
         PreparedStatement ps;
@@ -85,6 +99,11 @@ public class products extends javax.swing.JFrame {
         TableRowSorter<DefaultTableModel> trs = new TableRowSorter<>(model);
         tableProducts.setRowSorter(trs);
         trs.setRowFilter(RowFilter.regexFilter("(?i)" + str));
+    }
+    public void calc_iva(){
+        String query = "UPDATE produtos P, sub_categorias SC SET valor_iva = P.preco * SC.iva WHERE P.cod_subcategoria = SC.cod_subcategoria";
+        
+        executeSQLQueryNoMessage(query);
     }
     /**
      * This method is called from within the constructor to initialize the form.
