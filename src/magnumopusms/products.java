@@ -70,7 +70,7 @@ public class products extends javax.swing.JFrame {
             rs = ps.executeQuery();
             Product product;
             while(rs.next()){
-                product = new Product(rs.getInt("cod_produto"), rs.getString("nome_produto"), rs.getString("nome_categoria"), rs.getString("nome_subcategoria"), rs.getInt("quant_disp"), rs.getString("preco"), rs.getInt("iva"));
+                product = new Product(rs.getInt("cod_produto"), rs.getString("nome_produto"), rs.getString("nome_categoria"), rs.getString("nome_subcategoria"), rs.getInt("quant_disp"), rs.getInt("preco"), rs.getInt("preco_total"), rs.getDouble("iva"));
                 productsList.add(product);
             }
         }catch(SQLException ex){
@@ -81,7 +81,7 @@ public class products extends javax.swing.JFrame {
     public void show_product(){
         ArrayList<Product> list = productsList();
         DefaultTableModel model = (DefaultTableModel)tableProducts.getModel();
-        Object[] row = new Object[7];
+        Object[] row = new Object[8];
         for(int i=0; i<list.size();i++){
             row[0]=list.get(i).getId();
             row[1]=list.get(i).getNome_produto();
@@ -90,6 +90,7 @@ public class products extends javax.swing.JFrame {
             row[4]=list.get(i).getQuant_disp();
             row[5]=list.get(i).getPreco();
             row[6]=list.get(i).getIVA();
+            row[7]=list.get(i).getPrecoTotal();
 
            
             model.addRow(row);
@@ -170,7 +171,7 @@ public class products extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Nome", "Categoria", "SubCategoria", "Quantidade", "Preço", "IVA"
+                "ID", "Nome", "Categoria", "SubCategoria", "Quantidade", "Preço S/IVA", "IVA", "Preço"
             }
         ));
         tableProducts.addMouseListener(new java.awt.event.MouseAdapter() {
