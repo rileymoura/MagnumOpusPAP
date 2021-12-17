@@ -51,6 +51,20 @@ public class ordersAdd extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
+    public void executeSQLQueryNoMessage(String query){
+        Connection con = dbConnection.getConnection();
+        Statement st;
+        try{
+            st = con.createStatement();
+            if(st.executeUpdate(query) == 1){
+                
+            }else{
+                JOptionPane.showMessageDialog(null, "Erro! (executeSQLQueryNoMessage)");
+            }
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
     public ArrayList<Client> clientList(){
         ArrayList<Client> clientsList = new ArrayList<>();
         PreparedStatement ps;
@@ -84,8 +98,7 @@ public class ordersAdd extends javax.swing.JFrame {
         ArrayList<Product> productsList = new ArrayList<>();
         PreparedStatement ps;
         ResultSet rs;
-        String query="SELECT preco_total(produtos.preco_siva*sub_categorias.iva), produtos.*, categorias.*, sub_categorias.* "
-                + " FROM produtos, categorias, sub_categorias"
+        String query="SELECT * FROM produtos, categorias, sub_categorias"
                 + " WHERE produtos.cod_categoria = categorias.cod_categoria"
                 + " AND produtos.cod_subcategoria = sub_categorias.cod_subcategoria";
         try{
@@ -93,8 +106,8 @@ public class ordersAdd extends javax.swing.JFrame {
             rs = ps.executeQuery();
             Product product;
             while(rs.next()){                
-                product = new Product(rs.getInt("cod_produto"), rs.getString("nome_produto"), rs.getString("nome_categoria"), rs.getString("nome_subcategoria"), rs.getInt("quant_disp"), rs.getInt("preco"), rs.getInt("preco_total"), rs.getDouble("iva"));
-                productsList.add(product);
+            product = new Product(rs.getInt("cod_produto"), rs.getString("nome_produto"), rs.getString("nome_categoria"), rs.getString("nome_subcategoria"), rs.getInt("quant_disp"), rs.getFloat("preco"), rs.getFloat("preco_total"), rs.getFloat("valor_iva"));                
+            productsList.add(product);
             }
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null, ex);

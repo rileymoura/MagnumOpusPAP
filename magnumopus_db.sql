@@ -143,14 +143,14 @@ CREATE TABLE `produtos` (
   `cod_subcategoria` int(11) NOT NULL,
   `quant_disp` int(11) NOT NULL,
   `preco` float DEFAULT '0',
-  `iva` float NOT NULL
+  `valor_iva` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `produtos`
 --
 
-INSERT INTO `produtos` (`cod_produto`, `nome_produto`, `cod_categoria`, `cod_subcategoria`, `quant_disp`, `preco`, `iva`) VALUES
+INSERT INTO `produtos` (`cod_produto`, `nome_produto`, `cod_categoria`, `cod_subcategoria`, `quant_disp`, `preco`, `valor_iva`) VALUES
 (2, 'Millenium Focus Junior Drum Set Black', 3, 3, 3, 15, 0),
 (3, 'Harley Benton JB-75MN Black Vintage Series', 4, 4, 4, 20, 0);
 
@@ -163,7 +163,8 @@ INSERT INTO `produtos` (`cod_produto`, `nome_produto`, `cod_categoria`, `cod_sub
 CREATE TABLE `sub_categorias` (
   `cod_subcategoria` int(11) NOT NULL,
   `nome_subcategoria` varchar(50) NOT NULL,
-  `cod_categoria` int(11) NOT NULL
+  `cod_categoria` int(11) NOT NULL,
+  `iva` float NOT NULL DEFAULT '0.13'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

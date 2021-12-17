@@ -10,10 +10,10 @@ package magnumopusms;
  * @author A100519
  */
 class Product {
-    private double iva;
-    private int id, quant_disp, preco, preco_total;
+    private float iva, preco, preco_total;
+    private int id, quant_disp;
     private String nome_produto, nome_categoria, nome_subcategoria;
-    public Product(int id, String nome_produto, String nome_categoria, String nome_subcategoria, int quant_disp, int preco, int preco_total, double iva){
+    public Product(int id, String nome_produto, String nome_categoria, String nome_subcategoria, int quant_disp, float preco, float preco_total, float iva){
         this.id = id;
         this.nome_produto = nome_produto;
         this.nome_categoria = nome_categoria;
@@ -39,13 +39,13 @@ class Product {
     public int getQuant_disp(){
         return quant_disp;
     }
-    public int getPreco(){
+    public float getPreco(){
         return preco;
     }
-    public int getPrecoTotal(){
+    public float getPrecoTotal(){
         return preco_total;
     }
-    public double getIVA(){
+    public float getIVA(){
         return iva;
     }
 }

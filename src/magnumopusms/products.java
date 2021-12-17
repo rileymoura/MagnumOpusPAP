@@ -70,7 +70,7 @@ public class products extends javax.swing.JFrame {
             rs = ps.executeQuery();
             Product product;
             while(rs.next()){
-                product = new Product(rs.getInt("cod_produto"), rs.getString("nome_produto"), rs.getString("nome_categoria"), rs.getString("nome_subcategoria"), rs.getInt("quant_disp"), rs.getInt("preco"), rs.getInt("preco_total"), rs.getDouble("iva"));
+                product = new Product(rs.getInt("cod_produto"), rs.getString("nome_produto"), rs.getString("nome_categoria"), rs.getString("nome_subcategoria"), rs.getInt("quant_disp"), rs.getFloat("preco"), rs.getFloat("preco_total"), rs.getFloat("valor_iva"));
                 productsList.add(product);
             }
         }catch(SQLException ex){
@@ -100,11 +100,6 @@ public class products extends javax.swing.JFrame {
         TableRowSorter<DefaultTableModel> trs = new TableRowSorter<>(model);
         tableProducts.setRowSorter(trs);
         trs.setRowFilter(RowFilter.regexFilter("(?i)" + str));
-    }
-    public void calc_iva(){
-        String query = "UPDATE produtos P, sub_categorias SC SET valor_iva = P.preco * SC.iva WHERE P.cod_subcategoria = SC.cod_subcategoria";
-        
-        executeSQLQueryNoMessage(query);
     }
     /**
      * This method is called from within the constructor to initialize the form.
