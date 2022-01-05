@@ -11,11 +11,13 @@ package magnumopusms;
  */
 public class SubCat {
     private int id, cod_cat;
+    private float iva;
     private String nome_subcat;
-    public SubCat(int id, int cod_cat, String nome_subcat){
+    public SubCat(int id, int cod_cat, String nome_subcat, float iva){
         this.id = id;
         this.cod_cat = cod_cat;
         this.nome_subcat = nome_subcat;
+        this.iva = iva;
     }
 
     public int getId(){
@@ -26,6 +28,9 @@ public class SubCat {
     }
     public String getNome_subcat(){
         return nome_subcat;
+    }
+    public float getIVA(){
+        return iva;
     }
     
 }

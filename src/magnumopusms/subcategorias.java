@@ -57,7 +57,7 @@ public class subcategorias extends javax.swing.JFrame {
             rs = ps.executeQuery();
             SubCat subcat;
             while(rs.next()){
-                subcat = new SubCat(rs.getInt("cod_subcategoria"), rs.getInt("cod_categoria"), rs.getString("nome_subcategoria"));
+                subcat = new SubCat(rs.getInt("cod_subcategoria"), rs.getInt("cod_categoria"), rs.getString("nome_subcategoria"), rs.getFloat("iva"));
                 subcatList.add(subcat);
             }
         }catch(SQLException ex){
@@ -68,10 +68,11 @@ public class subcategorias extends javax.swing.JFrame {
     public void show_subcat(){
         ArrayList<SubCat> list = subcatList();
         DefaultTableModel model = (DefaultTableModel)tableSubCats.getModel();
-        Object[] row = new Object[2];
+        Object[] row = new Object[3];
         for(int i=0; i<list.size();i++){
             row[0]=list.get(i).getId();
             row[1]=list.get(i).getNome_subcat();
+            row[2]=list.get(i).getIVA();
            
             model.addRow(row);
         }
@@ -102,6 +103,8 @@ public class subcategorias extends javax.swing.JFrame {
         labelID = new javax.swing.JLabel();
         labelNome = new javax.swing.JLabel();
         fieldProcurar = new javax.swing.JTextField();
+        fieldIVASubCat = new javax.swing.JTextField();
+        labelNome1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -146,7 +149,7 @@ public class subcategorias extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Sub Categoria"
+                "ID", "Sub Categoria", "IVA"
             }
         ));
         tableSubCats.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -204,6 +207,11 @@ public class subcategorias extends javax.swing.JFrame {
             }
         });
 
+        fieldIVASubCat.setFont(new java.awt.Font("Century Gothic", 1, 11)); // NOI18N
+
+        labelNome1.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        labelNome1.setText("IVA");
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -218,20 +226,30 @@ public class subcategorias extends javax.swing.JFrame {
                                 .addGap(191, 191, 191)
                                 .addComponent(fieldProcurar, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(26, 26, 26)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addComponent(labelNome)
-                                .addGap(18, 18, 18)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(mainPanelLayout.createSequentialGroup()
+                                    .addGap(70, 70, 70)
+                                    .addComponent(labelID)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(fieldId, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                    .addGap(34, 34, 34)
+                                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                            .addComponent(labelNome1)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(fieldIVASubCat, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                            .addComponent(labelNome)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(fieldNomeSubCat, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(fieldNomeSubCat, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(buttonAdd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(buttonUpdate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(buttonDelete, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addComponent(labelID)
-                                .addGap(18, 18, 18)
-                                .addComponent(fieldId, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(buttonDelete, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addComponent(buttonBack))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -239,17 +257,8 @@ public class subcategorias extends javax.swing.JFrame {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addGap(13, 13, 13)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelMOpus1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fieldProcurar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonBack)
-                        .addGap(0, 18, Short.MAX_VALUE))
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(fieldId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -258,13 +267,24 @@ public class subcategorias extends javax.swing.JFrame {
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(fieldNomeSubCat, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(labelNome, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(fieldIVASubCat, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelNome1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(buttonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(buttonUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(buttonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(39, 39, 39)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelMOpus1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fieldProcurar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonBack)
+                .addGap(0, 18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
@@ -288,7 +308,7 @@ public class subcategorias extends javax.swing.JFrame {
                     .addComponent(buttonExit))
                 .addGap(18, 18, 18)
                 .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -311,7 +331,7 @@ public class subcategorias extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonExitActionPerformed
 
     private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddActionPerformed
-        String query = "INSERT INTO sub_categorias (nome_subcategoria, cod_categoria) VALUES ('"+fieldNomeSubCat.getText()+"', '"+idCat+"')";
+        String query = "INSERT INTO sub_categorias (nome_subcategoria, cod_categoria, iva) VALUES ('"+fieldNomeSubCat.getText()+"', '"+idCat+"', '"+fieldIVASubCat.getText()+"')";
 
         executeSQLQuery(query, "inseridos");
         DefaultTableModel model = (DefaultTableModel) tableSubCats.getModel();
@@ -335,13 +355,14 @@ public class subcategorias extends javax.swing.JFrame {
         TableModel model = tableSubCats.getModel();
         fieldId.setText(model.getValueAt(i,0).toString());
         fieldNomeSubCat.setText(model.getValueAt(i,1).toString());
+        fieldIVASubCat.setText(model.getValueAt(i,2).toString());
     }//GEN-LAST:event_tableSubCatsMouseClicked
 
     private void buttonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUpdateActionPerformed
         int i = tableSubCats.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) tableSubCats.getModel();
         String id = model.getValueAt(i,0).toString();
-        String query = "UPDATE `sub_categorias` SET `nome_subcategoria`= '"+fieldNomeSubCat.getText()+"' WHERE cod_subcategoria = '"+id+"'";
+        String query = "UPDATE `sub_categorias` SET `nome_subcategoria`= '"+fieldNomeSubCat.getText()+"', iva = '"+fieldIVASubCat.getText()+"' WHERE cod_subcategoria = '"+id+"'";
 
         executeSQLQuery(query, "atualizados");
         int rowCount = model.getRowCount();
@@ -426,6 +447,7 @@ public class subcategorias extends javax.swing.JFrame {
     private javax.swing.JButton buttonDelete;
     private javax.swing.JButton buttonExit;
     private javax.swing.JButton buttonUpdate;
+    private javax.swing.JTextField fieldIVASubCat;
     public javax.swing.JTextField fieldId;
     private javax.swing.JTextField fieldNomeSubCat;
     private javax.swing.JTextField fieldProcurar;
@@ -434,6 +456,7 @@ public class subcategorias extends javax.swing.JFrame {
     private javax.swing.JLabel labelMOpus;
     private javax.swing.JLabel labelMOpus1;
     private javax.swing.JLabel labelNome;
+    private javax.swing.JLabel labelNome1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JTable tableSubCats;
     // End of variables declaration//GEN-END:variables

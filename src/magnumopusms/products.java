@@ -70,7 +70,7 @@ public class products extends javax.swing.JFrame {
             rs = ps.executeQuery();
             Product product;
             while(rs.next()){
-                product = new Product(rs.getInt("cod_produto"), rs.getString("nome_produto"), rs.getString("nome_categoria"), rs.getString("nome_subcategoria"), rs.getInt("quant_disp"), rs.getFloat("preco"), rs.getFloat("preco_total"), rs.getFloat("valor_iva"));
+                product = new Product(rs.getInt("cod_produto"), rs.getString("nome_produto"), rs.getString("nome_categoria"), rs.getString("nome_subcategoria"), rs.getInt("quant_disp"), rs.getFloat("preco"), rs.getFloat("preco_civa"), rs.getFloat("valor_iva"));
                 productsList.add(product);
             }
         }catch(SQLException ex){
