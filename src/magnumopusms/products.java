@@ -44,20 +44,6 @@ public class products extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
-    public void executeSQLQueryNoMessage(String query){
-        Connection con = dbConnection.getConnection();
-        Statement st;
-        try{
-            st = con.createStatement();
-            if(st.executeUpdate(query) == 1){
-                
-            }else{
-                JOptionPane.showMessageDialog(null, "Erro! (executeSQLQueryNoMessage)");
-            }
-        }catch(Exception ex){
-            JOptionPane.showMessageDialog(null, ex);
-        }
-    }
     public ArrayList<Product> productsList(){
         ArrayList<Product> productsList = new ArrayList<>();
         PreparedStatement ps;
@@ -70,7 +56,7 @@ public class products extends javax.swing.JFrame {
             rs = ps.executeQuery();
             Product product;
             while(rs.next()){
-                product = new Product(rs.getInt("cod_produto"), rs.getString("nome_produto"), rs.getString("nome_categoria"), rs.getString("nome_subcategoria"), rs.getInt("quant_disp"), rs.getFloat("preco"), rs.getFloat("preco_total"), rs.getFloat("valor_iva"));
+                product = new Product(rs.getInt("cod_produto"), rs.getString("nome_produto"), rs.getString("nome_categoria"), rs.getString("nome_subcategoria"), rs.getInt("quant_disp"), rs.getString("preco"));
                 productsList.add(product);
             }
         }catch(SQLException ex){
@@ -81,7 +67,7 @@ public class products extends javax.swing.JFrame {
     public void show_product(){
         ArrayList<Product> list = productsList();
         DefaultTableModel model = (DefaultTableModel)tableProducts.getModel();
-        Object[] row = new Object[8];
+        Object[] row = new Object[6];
         for(int i=0; i<list.size();i++){
             row[0]=list.get(i).getId();
             row[1]=list.get(i).getNome_produto();
@@ -89,9 +75,6 @@ public class products extends javax.swing.JFrame {
             row[3]=list.get(i).getNome_subcategoria();
             row[4]=list.get(i).getQuant_disp();
             row[5]=list.get(i).getPreco();
-            row[6]=list.get(i).getIVA();
-            row[7]=list.get(i).getPrecoTotal();
-
            
             model.addRow(row);
         }}
@@ -166,7 +149,7 @@ public class products extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Nome", "Categoria", "SubCategoria", "Quantidade", "Preço S/IVA", "IVA", "Preço"
+                "ID", "Nome", "Categoria", "SubCategoria", "Quantidade", "Preço"
             }
         ));
         tableProducts.addMouseListener(new java.awt.event.MouseAdapter() {

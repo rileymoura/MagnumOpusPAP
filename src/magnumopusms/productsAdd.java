@@ -203,6 +203,7 @@ public class productsAdd extends javax.swing.JFrame {
         });
 
         fieldPrice.setFont(new java.awt.Font("Century Gothic", 1, 11)); // NOI18N
+        fieldPrice.setText("€");
         fieldPrice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fieldPriceActionPerformed(evt);
