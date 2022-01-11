@@ -43,9 +43,9 @@ public class ordersAdd extends javax.swing.JFrame {
         try{
             st = con.createStatement();
             if(st.executeUpdate(query) == 1){
-                JOptionPane.showMessageDialog(null, "Dados "+message+" com sucesso");
+                JOptionPane.showMessageDialog(null, "Encomenda "+message+" com sucesso");
             }else{
-                JOptionPane.showMessageDialog(null, "Dados não "+message);
+                JOptionPane.showMessageDialog(null, "Encomenda não "+message);
             }
         }catch(Exception ex){
             JOptionPane.showMessageDialog(null, ex);
@@ -139,9 +139,9 @@ public class ordersAdd extends javax.swing.JFrame {
     }
      public void search_clients(String str){
         DefaultTableModel model = (DefaultTableModel) tableClients.getModel();
-        TableRowSorter<DefaultTableModel> trs = new TableRowSorter<>(model);
-        tableClients.setRowSorter(trs);
-        trs.setRowFilter(RowFilter.regexFilter("(?i)" + str));
+        TableRowSorter<DefaultTableModel> trs1 = new TableRowSorter<>(model);
+        tableClients.setRowSorter(trs1);
+        trs1.setRowFilter(RowFilter.regexFilter("(?i)" + str));
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -169,14 +169,15 @@ public class ordersAdd extends javax.swing.JFrame {
         tableProductsS = new javax.swing.JTable();
         labelEncomendas3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        jSpinnerQuantidade = new javax.swing.JSpinner();
         fieldIdClient = new javax.swing.JTextField();
         labelSelectedId = new javax.swing.JLabel();
         fieldIdOrder = new javax.swing.JTextField();
         labelSelectedId1 = new javax.swing.JLabel();
         buttonNewOrder = new javax.swing.JButton();
-        fieldProcurar = new javax.swing.JTextField();
-        fieldProcurar1 = new javax.swing.JTextField();
+        fieldProcurarEnc = new javax.swing.JTextField();
+        fieldProcurarProd = new javax.swing.JTextField();
+        buttonNewOrder1 = new javax.swing.JButton();
         labelMOpus2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -197,7 +198,7 @@ public class ordersAdd extends javax.swing.JFrame {
 
         buttonBack.setBackground(new java.awt.Color(255, 204, 102));
         buttonBack.setFont(new java.awt.Font("Century Gothic", 1, 11)); // NOI18N
-        buttonBack.setText("VOLTAR");
+        buttonBack.setText("CANCELAR");
         buttonBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonBackActionPerformed(evt);
@@ -255,13 +256,18 @@ public class ordersAdd extends javax.swing.JFrame {
         buttonRemoveProd.setBackground(new java.awt.Color(255, 204, 102));
         buttonRemoveProd.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         buttonRemoveProd.setText("<<<");
+        buttonRemoveProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonRemoveProdActionPerformed(evt);
+            }
+        });
 
         tableProductsS.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Nome", "Categoria", "SubCategoria", "Quantidade", "Preço S/IVA", "IVA", "Preço"
+                "ID", "Nome", "Quantidade", "Preço"
             }
         ));
         tableProductsS.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -306,29 +312,38 @@ public class ordersAdd extends javax.swing.JFrame {
             }
         });
 
-        fieldProcurar.setFont(new java.awt.Font("Century Gothic", 1, 11)); // NOI18N
-        fieldProcurar.setText("Pesquisar...");
-        fieldProcurar.addActionListener(new java.awt.event.ActionListener() {
+        fieldProcurarEnc.setFont(new java.awt.Font("Century Gothic", 1, 11)); // NOI18N
+        fieldProcurarEnc.setText("Pesquisar...");
+        fieldProcurarEnc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldProcurarActionPerformed(evt);
+                fieldProcurarEncActionPerformed(evt);
             }
         });
-        fieldProcurar.addKeyListener(new java.awt.event.KeyAdapter() {
+        fieldProcurarEnc.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                fieldProcurarKeyReleased(evt);
+                fieldProcurarEncKeyReleased(evt);
             }
         });
 
-        fieldProcurar1.setFont(new java.awt.Font("Century Gothic", 1, 11)); // NOI18N
-        fieldProcurar1.setText("Pesquisar...");
-        fieldProcurar1.addActionListener(new java.awt.event.ActionListener() {
+        fieldProcurarProd.setFont(new java.awt.Font("Century Gothic", 1, 11)); // NOI18N
+        fieldProcurarProd.setText("Pesquisar...");
+        fieldProcurarProd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldProcurar1ActionPerformed(evt);
+                fieldProcurarProdActionPerformed(evt);
             }
         });
-        fieldProcurar1.addKeyListener(new java.awt.event.KeyAdapter() {
+        fieldProcurarProd.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                fieldProcurar1KeyReleased(evt);
+                fieldProcurarProdKeyReleased(evt);
+            }
+        });
+
+        buttonNewOrder1.setBackground(new java.awt.Color(255, 204, 102));
+        buttonNewOrder1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        buttonNewOrder1.setText("FINALIZAR");
+        buttonNewOrder1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonNewOrder1ActionPerformed(evt);
             }
         });
 
@@ -356,7 +371,7 @@ public class ordersAdd extends javax.swing.JFrame {
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                                         .addComponent(labelEncomendas3)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(fieldProcurar, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(fieldProcurarEnc, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -372,24 +387,27 @@ public class ordersAdd extends javax.swing.JFrame {
                                             .addComponent(fieldIdOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(fieldIdClient, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                            .addGroup(mainPanelLayout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(fieldProcurar1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(fieldProcurarProd, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 612, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(29, 29, 29))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                    .addComponent(buttonNewOrder1, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(mainPanelLayout.createSequentialGroup()
                                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(buttonAddProd)
-                                            .addComponent(buttonRemoveProd))
-                                        .addGap(71, 71, 71)))
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())))))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                                .addComponent(jLabel1)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jSpinnerQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(buttonAddProd)
+                                                    .addComponent(buttonRemoveProd))
+                                                .addGap(60, 60, 60)))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(192, 192, 192))))))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -411,7 +429,7 @@ public class ordersAdd extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel1)
-                                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jSpinnerQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(mainPanelLayout.createSequentialGroup()
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(mainPanelLayout.createSequentialGroup()
@@ -419,7 +437,7 @@ public class ordersAdd extends javax.swing.JFrame {
                                         .addComponent(labelEncomendas3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(mainPanelLayout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(fieldProcurar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(fieldProcurarEnc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(mainPanelLayout.createSequentialGroup()
@@ -435,11 +453,17 @@ public class ordersAdd extends javax.swing.JFrame {
                         .addComponent(labelEncomendas2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fieldProcurar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(labelEncomendas1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fieldProcurarProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addComponent(labelEncomendas1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(buttonNewOrder1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(buttonBack)
                 .addContainerGap())
         );
@@ -455,11 +479,11 @@ public class ordersAdd extends javax.swing.JFrame {
             .addGroup(backgroundPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(labelMOpus2)
-                .addGap(483, 483, 483)
+                .addGap(468, 468, 468)
                 .addComponent(buttonExit)
                 .addContainerGap())
             .addGroup(backgroundPanelLayout.createSequentialGroup()
-                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1329, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         backgroundPanelLayout.setVerticalGroup(
@@ -494,11 +518,22 @@ public class ordersAdd extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonExitActionPerformed
 
     private void buttonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBackActionPerformed
+        if (fieldIdOrder.getText().isEmpty()){
+           orders orders = new orders();
+           orders.setVisible(true);
+           orders.setLocationRelativeTo(null);
+           orders.pack();
+           this.dispose(); 
+        }else{
+        String query = "DELETE FROM encomendas WHERE cod_encomenda = '"+fieldIdOrder.getText()+"'";
+
+        executeSQLQuery(query, "cancelada");
         orders orders = new orders();
         orders.setVisible(true);
         orders.setLocationRelativeTo(null);
         orders.pack();
         this.dispose();
+        }
     }//GEN-LAST:event_buttonBackActionPerformed
 
     private void tableClientsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableClientsMouseClicked
@@ -518,7 +553,16 @@ public class ordersAdd extends javax.swing.JFrame {
     private void buttonAddProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddProdActionPerformed
         int i = tableProducts.getSelectedRow();
         TableModel model = tableProducts.getModel();
-        int id;
+        DefaultTableModel model2 = (DefaultTableModel)tableProductsS.getModel();
+        int quantidade = (int) jSpinnerQuantidade.getValue();
+        float preco = (float) model.getValueAt(i, 7);
+        Object[] row = new Object[4];
+        row[0] = model.getValueAt(i, 0).toString();
+        row[1] = model.getValueAt(i, 1).toString();
+        row[2] = quantidade;
+        row[3] = quantidade * preco;
+        
+        model2.addRow(row);
     }//GEN-LAST:event_buttonAddProdActionPerformed
 
     private void fieldIdClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldIdClientActionPerformed
@@ -539,35 +583,62 @@ public class ordersAdd extends javax.swing.JFrame {
             ps.execute();
             
             ResultSet rs =  ps.getGeneratedKeys();
-            int generatedKey = 0;
+            int generatedKey;
             if (rs.next()){
                 generatedKey = rs.getInt(1);
+                fieldIdOrder.setText(String.valueOf(generatedKey));
             }
-            fieldIdOrder.setText(String.valueOf(generatedKey));
-            JOptionPane.showMessageDialog(null, "Encomenda criada");
+            JOptionPane.showMessageDialog(null, "Encomenda iniciada");
         } catch (SQLException ex) {
             Logger.getLogger(ordersAdd.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, ex);
         }
     }//GEN-LAST:event_buttonNewOrderActionPerformed
 
-    private void fieldProcurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldProcurarActionPerformed
+    private void fieldProcurarEncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldProcurarEncActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_fieldProcurarActionPerformed
+    }//GEN-LAST:event_fieldProcurarEncActionPerformed
 
-    private void fieldProcurarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldProcurarKeyReleased
-        String searchString = fieldProcurar.getText();
+    private void fieldProcurarEncKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldProcurarEncKeyReleased
+        String searchString = fieldProcurarEnc.getText();
         search_clients(searchString);
-    }//GEN-LAST:event_fieldProcurarKeyReleased
+    }//GEN-LAST:event_fieldProcurarEncKeyReleased
 
-    private void fieldProcurar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldProcurar1ActionPerformed
+    private void fieldProcurarProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldProcurarProdActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_fieldProcurar1ActionPerformed
+    }//GEN-LAST:event_fieldProcurarProdActionPerformed
 
-    private void fieldProcurar1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldProcurar1KeyReleased
-        String searchString = fieldProcurar.getText();
+    private void fieldProcurarProdKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldProcurarProdKeyReleased
+        String searchString = fieldProcurarProd.getText();
         search_products(searchString);
-    }//GEN-LAST:event_fieldProcurar1KeyReleased
+    }//GEN-LAST:event_fieldProcurarProdKeyReleased
+
+    private void buttonRemoveProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoveProdActionPerformed
+        int getSelectedRowForDeletion = tableProductsS.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel)tableProductsS.getModel();
+        model.removeRow(getSelectedRowForDeletion);
+    }//GEN-LAST:event_buttonRemoveProdActionPerformed
+
+    private void buttonNewOrder1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNewOrder1ActionPerformed
+        DefaultTableModel model = (DefaultTableModel)tableProductsS.getModel();
+        for(int i=0; i<model.getRowCount();i++){
+            String query = "INSERT INTO encomendas_produtos(cod_encomenda, cod_produto, quant,  preco_prods) VALUES ('"
+                    +fieldIdOrder.getText()+  "', '"+model.getValueAt(i, 0)+"', '"+model.getValueAt(i, 2)+"', '"
+                    +model.getValueAt(i, 3)+"')";
+            executeSQLQuery(query, "inserida");
+        }
+        orders orders = new orders();
+        orders.setVisible(true);
+        orders.pack();
+        orders.setLocationRelativeTo(null);
+        DefaultTableModel model2 = (DefaultTableModel) orders.tableOrders.getModel();
+        int rowCount = model2.getRowCount();
+        for (int i = rowCount -1; i >= 0; i--){
+            model2.removeRow(i);
+        }
+        orders.show_orders();
+        this.dispose();
+    }//GEN-LAST:event_buttonNewOrder1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -610,16 +681,17 @@ public class ordersAdd extends javax.swing.JFrame {
     private javax.swing.JButton buttonBack;
     private javax.swing.JButton buttonExit;
     private javax.swing.JButton buttonNewOrder;
+    private javax.swing.JButton buttonNewOrder1;
     private javax.swing.JButton buttonRemoveProd;
     public static javax.swing.JTextField fieldIdClient;
     public static javax.swing.JTextField fieldIdOrder;
-    private javax.swing.JTextField fieldProcurar;
-    private javax.swing.JTextField fieldProcurar1;
+    private javax.swing.JTextField fieldProcurarEnc;
+    private javax.swing.JTextField fieldProcurarProd;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JSpinner jSpinnerQuantidade;
     private javax.swing.JLabel labelEncomendas;
     private javax.swing.JLabel labelEncomendas1;
     private javax.swing.JLabel labelEncomendas2;

@@ -10,9 +10,10 @@ package magnumopusms;
  * @author a100519
  */
 public class Order {
-    private int id, valor;
+    private int id;
+    private float valor;
     private String nome_cliente, produtos, data, estado;
-    public Order(int id, String nome_cliente, String produtos, int valor, String data, String estado){
+    public Order(int id, String nome_cliente, String produtos, float valor, String data, String estado){
         this.id = id;
         this.nome_cliente = nome_cliente;
         this.produtos = produtos;
@@ -29,7 +30,7 @@ public class Order {
     public String getProdutos(){
         return produtos;
     }
-    public int getValor(){
+    public float getValor(){
         return valor;
     }
     public String getData(){

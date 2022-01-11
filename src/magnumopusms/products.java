@@ -199,6 +199,11 @@ public class products extends javax.swing.JFrame {
 
         fieldProcurar.setFont(new java.awt.Font("Century Gothic", 1, 11)); // NOI18N
         fieldProcurar.setText("Pesquisar...");
+        fieldProcurar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldProcurarActionPerformed(evt);
+            }
+        });
         fieldProcurar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 fieldProcurarKeyReleased(evt);
@@ -341,6 +346,7 @@ public class products extends javax.swing.JFrame {
         productsUpdate.categoriaComboBox.setSelectedItem(model.getValueAt(i,2).toString());
         productsUpdate.subcategoriaComboBox.setSelectedItem(model.getValueAt(i,3).toString());
         productsUpdate.fieldQuant.setText(model.getValueAt(i,4).toString());
+        productsUpdate.fieldPrice.setText(model.getValueAt(i,5).toString());
         productsUpdate.setVisible(true);
         productsUpdate.pack();
         productsUpdate.setLocationRelativeTo(null);
@@ -365,6 +371,10 @@ public class products extends javax.swing.JFrame {
         String searchString = fieldProcurar.getText();
         search(searchString);
     }//GEN-LAST:event_fieldProcurarKeyReleased
+
+    private void fieldProcurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldProcurarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fieldProcurarActionPerformed
 
     /**
      * @param args the command line arguments

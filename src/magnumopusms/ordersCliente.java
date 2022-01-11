@@ -55,7 +55,7 @@ public class ordersCliente extends javax.swing.JFrame {
             rs = ps.executeQuery();
             Order order;
             while(rs.next()){
-                order = new Order(rs.getInt("cod_encomenda"), "" , rs.getString("nome_produto") , rs.getInt("preco_prods"), rs.getString("quant"), rs.getString("cod_encprod"));
+                order = new Order(rs.getInt("cod_encomenda"), "" , rs.getString("nome_produto") , rs.getFloat("preco_prods"), rs.getString("quant"), rs.getString("cod_encprod"));
                 ordersList.add(order);
             }
         }catch(SQLException ex){

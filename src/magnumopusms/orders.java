@@ -58,7 +58,7 @@ public class orders extends javax.swing.JFrame {
             rs = ps.executeQuery();
             Order order;
             while(rs.next()){
-                order = new Order(rs.getInt("cod_encomenda"), rs.getString("nome_cliente"), "" , rs.getInt("preco_total"), rs.getString("data"), rs.getString("estado"));
+                order = new Order(rs.getInt("cod_encomenda"), rs.getString("nome_cliente"), "" , rs.getFloat("preco_total"), rs.getString("data"), rs.getString("estado"));
                 ordersList.add(order);
             }
         }catch(SQLException ex){
@@ -198,7 +198,12 @@ public class orders extends javax.swing.JFrame {
         });
 
         estadoComboBox.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        estadoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Em Processamento", "Enviada", "Entregue", "Cancelada" }));
+        estadoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Em Processamento", "Enviada", "Entregue", "Cancelada", "Venda Em Loja" }));
+        estadoComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                estadoComboBoxActionPerformed(evt);
+            }
+        });
 
         fieldProcurar.setFont(new java.awt.Font("Century Gothic", 1, 11)); // NOI18N
         fieldProcurar.setText("Pesquisar...");
@@ -412,6 +417,10 @@ public class orders extends javax.swing.JFrame {
         search(searchString);
     }//GEN-LAST:event_fieldProcurarKeyReleased
 
+    private void estadoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadoComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_estadoComboBoxActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -463,6 +472,6 @@ public class orders extends javax.swing.JFrame {
     private javax.swing.JLabel labelMOpus2;
     private javax.swing.JLabel labelSelectedId;
     private javax.swing.JPanel mainPanel;
-    private javax.swing.JTable tableOrders;
+    public javax.swing.JTable tableOrders;
     // End of variables declaration//GEN-END:variables
 }
