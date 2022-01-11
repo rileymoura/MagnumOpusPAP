@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 05-Jan-2022 às 20:04
+-- Tempo de geração: 11-Jan-2022 às 19:54
 -- Versão do servidor: 5.7.31
 -- versão do PHP: 7.3.21
 
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `categorias` (
   `cod_categoria` int(11) NOT NULL AUTO_INCREMENT,
   `nome_categoria` varchar(50) NOT NULL,
   PRIMARY KEY (`cod_categoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `categorias`
@@ -41,7 +41,8 @@ CREATE TABLE IF NOT EXISTS `categorias` (
 INSERT INTO `categorias` (`cod_categoria`, `nome_categoria`) VALUES
 (1, 'Guitarras'),
 (3, 'Baterias'),
-(4, 'Baixos');
+(4, 'Baixos'),
+(5, 'Piano');
 
 -- --------------------------------------------------------
 
@@ -78,19 +79,19 @@ DROP TABLE IF EXISTS `encomendas`;
 CREATE TABLE IF NOT EXISTS `encomendas` (
   `cod_encomenda` int(11) NOT NULL AUTO_INCREMENT,
   `cod_cliente` int(11) NOT NULL,
-  `preco_total` int(50) NOT NULL DEFAULT '0',
+  `preco_total` float NOT NULL DEFAULT '0',
   `data` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `estado` varchar(25) DEFAULT 'Em Processamento',
   PRIMARY KEY (`cod_encomenda`),
   KEY `cod_cliente` (`cod_cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `encomendas`
 --
 
 INSERT INTO `encomendas` (`cod_encomenda`, `cod_cliente`, `preco_total`, `data`, `estado`) VALUES
-(1, 3, 80, '2021-11-15 00:00:00', 'Em Processamento');
+(1, 3, 39.55, '2022-01-11 18:02:38', 'Venda Em Loja');
 
 -- --------------------------------------------------------
 
@@ -108,22 +109,22 @@ CREATE TABLE IF NOT EXISTS `encomendas_produtos` (
   PRIMARY KEY (`cod_encprod`),
   KEY `cod_produto` (`cod_produto`),
   KEY `cod_encomenda` (`cod_encomenda`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `encomendas_produtos`
 --
 
 INSERT INTO `encomendas_produtos` (`cod_encprod`, `cod_encomenda`, `cod_produto`, `quant`, `preco_prods`) VALUES
-(2, 1, 2, 2, 33.9),
-(3, 1, 3, 2, 45.2);
+(1, 1, 2, 1, 16.95),
+(2, 1, 3, 1, 22.6);
 
 --
 -- Acionadores `encomendas_produtos`
 --
-DROP TRIGGER IF EXISTS `trigger_preco_total_in`;
+DROP TRIGGER IF EXISTS `trigger_preco_prods_in`;
 DELIMITER $$
-CREATE TRIGGER `trigger_preco_total_in` BEFORE INSERT ON `encomendas_produtos` FOR EACH ROW SET NEW.preco_prods = 
+CREATE TRIGGER `trigger_preco_prods_in` BEFORE INSERT ON `encomendas_produtos` FOR EACH ROW SET NEW.preco_prods = 
   (
     SELECT preco_civa * NEW.quant
       FROM produtos
@@ -131,14 +132,34 @@ CREATE TRIGGER `trigger_preco_total_in` BEFORE INSERT ON `encomendas_produtos` F
   )
 $$
 DELIMITER ;
-DROP TRIGGER IF EXISTS `trigger_preco_total_up`;
+DROP TRIGGER IF EXISTS `trigger_preco_prods_up`;
 DELIMITER $$
-CREATE TRIGGER `trigger_preco_total_up` BEFORE UPDATE ON `encomendas_produtos` FOR EACH ROW SET NEW.preco_prods = 
+CREATE TRIGGER `trigger_preco_prods_up` BEFORE UPDATE ON `encomendas_produtos` FOR EACH ROW SET NEW.preco_prods = 
   (
     SELECT preco_civa * NEW.quant
       FROM produtos
      WHERE NEW.cod_produto = cod_produto
   )
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `trigger_preco_total_in`;
+DELIMITER $$
+CREATE TRIGGER `trigger_preco_total_in` AFTER INSERT ON `encomendas_produtos` FOR EACH ROW UPDATE encomendas SET preco_total =
+(
+	SELECT SUM(preco_prods)
+    FROM encomendas_produtos
+    WHERE encomendas_produtos.cod_encomenda = encomendas.cod_encomenda
+)
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `trigger_preco_total_up`;
+DELIMITER $$
+CREATE TRIGGER `trigger_preco_total_up` AFTER UPDATE ON `encomendas_produtos` FOR EACH ROW UPDATE encomendas SET preco_total =
+(
+	SELECT SUM(preco_prods)
+    FROM encomendas_produtos
+    WHERE encomendas_produtos.cod_encomenda = encomendas.cod_encomenda
+)
 $$
 DELIMITER ;
 
@@ -158,17 +179,18 @@ CREATE TABLE IF NOT EXISTS `login` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_2` (`username`),
   KEY `username` (`username`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `login`
 --
 
 INSERT INTO `login` (`id`, `nome_func`, `username`, `password`, `tipo_user`) VALUES
-(1, 'Administrador', 'admin', 'adminmopus', 'admin'),
+(1, 'Administrador', 'admin', 'adminmopus1', 'admin'),
 (2, 'user', 'user', 'user', 'user'),
-(3, 'user2', 'user2', 'user2', 'user'),
-(9, '', '', '', 'user');
+(3, 'user1', 'user1', 'user1', 'user'),
+(4, '', '', '', 'user'),
+(5, 'user2', 'user2', 'user2', 'user');
 
 -- --------------------------------------------------------
 
@@ -189,7 +211,7 @@ CREATE TABLE IF NOT EXISTS `produtos` (
   PRIMARY KEY (`cod_produto`),
   KEY `cod_categoria` (`cod_categoria`),
   KEY `cod_subcategoria` (`cod_subcategoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `produtos`
@@ -278,8 +300,8 @@ ALTER TABLE `encomendas_produtos`
 -- Limitadores para a tabela `produtos`
 --
 ALTER TABLE `produtos`
-  ADD CONSTRAINT `produtos_ibfk_1` FOREIGN KEY (`cod_categoria`) REFERENCES `categorias` (`cod_categoria`),
-  ADD CONSTRAINT `produtos_ibfk_2` FOREIGN KEY (`cod_subcategoria`) REFERENCES `sub_categorias` (`cod_subcategoria`);
+  ADD CONSTRAINT `produtos_ibfk_1` FOREIGN KEY (`cod_categoria`) REFERENCES `categorias` (`cod_categoria`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `produtos_ibfk_2` FOREIGN KEY (`cod_subcategoria`) REFERENCES `sub_categorias` (`cod_subcategoria`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `sub_categorias`
