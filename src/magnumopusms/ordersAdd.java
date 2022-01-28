@@ -625,7 +625,7 @@ public class ordersAdd extends javax.swing.JFrame {
                     }else{
                         JOptionPane.showMessageDialog(null, "Não existe quantidade suficiente do produto: "+model.getValueAt(i,1)+" \n\n Quantidade Disponível: "+quant_disp);
                         query = "DELETE FROM encomendas WHERE cod_encomenda = '"+fieldIdOrder.getText()+"'";
-                        executeSQLQuery(query, "cancelada");
+                        executeSQLQuery(query, "Encomenda cancelada");
                     }}
             }
             orders orders = new orders();
