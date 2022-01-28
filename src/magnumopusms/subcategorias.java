@@ -376,14 +376,16 @@ public class subcategorias extends javax.swing.JFrame {
         int i = tableSubCats.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) tableSubCats.getModel();
         String id = model.getValueAt(i,0).toString();
+        int input = JOptionPane.showConfirmDialog(null, "Tem a certeza que pretende eliminar esta subcategoria?", "Confirmação", JOptionPane.YES_NO_OPTION);
+        
+        if (input == 0) {
         String query = "DELETE FROM sub_categorias WHERE cod_subcategoria = '"+id+"'";
-
         executeSQLQuery(query, "apagados");
         int rowCount = model.getRowCount();
         for (i = rowCount -1; i >= 0; i--){
             model.removeRow(i);
         }
-        show_subcat();
+        show_subcat();}
     }//GEN-LAST:event_buttonDeleteActionPerformed
     public void search (String str){
         DefaultTableModel model = (DefaultTableModel) tableSubCats.getModel();

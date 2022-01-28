@@ -338,6 +338,9 @@ public class productsAdd extends javax.swing.JFrame {
             Logger.getLogger(productsAdd.class.getName()).log(Level.SEVERE, null, ex);
         }
         products products = new products();
+        products.setVisible(true);
+        products.pack();
+        products.setLocationRelativeTo(null);
         DefaultTableModel model = (DefaultTableModel) products.tableProducts.getModel();
         int rowCount = model.getRowCount();
         for (int i = rowCount -1; i >= 0; i--){

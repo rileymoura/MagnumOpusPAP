@@ -105,7 +105,6 @@ Connection con = null;
         fieldPassword = new javax.swing.JTextField();
         labelNome = new javax.swing.JLabel();
         buttonUpdate = new javax.swing.JButton();
-        buttonClear = new javax.swing.JButton();
         buttonDelete = new javax.swing.JButton();
         fieldNomeFunc = new javax.swing.JTextField();
         labelID = new javax.swing.JLabel();
@@ -197,15 +196,6 @@ Connection con = null;
             }
         });
 
-        buttonClear.setBackground(new java.awt.Color(255, 204, 102));
-        buttonClear.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        buttonClear.setText("LIMPAR");
-        buttonClear.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonClearActionPerformed(evt);
-            }
-        });
-
         buttonDelete.setBackground(new java.awt.Color(255, 204, 102));
         buttonDelete.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         buttonDelete.setText("ELIMINAR");
@@ -260,12 +250,15 @@ Connection con = null;
                                 .addComponent(labelMOpus1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(fieldProcurar, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(62, 62, 62)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(buttonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(buttonUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(buttonClear, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(buttonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addGap(62, 62, 62)
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(buttonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(buttonUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(buttonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
@@ -302,8 +295,6 @@ Connection con = null;
                         .addComponent(buttonBack))
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addComponent(buttonUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(buttonClear, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(buttonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -406,17 +397,14 @@ Connection con = null;
         show_func();
     }//GEN-LAST:event_buttonUpdateActionPerformed
 
-    private void buttonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonClearActionPerformed
-        fieldId.setText("");
-        fieldNomeFunc.setText("");
-        fieldUsername.setText("");
-        fieldPassword.setText("");
-    }//GEN-LAST:event_buttonClearActionPerformed
-
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
         int i = tableFuncs.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) tableFuncs.getModel();
-        String id = model.getValueAt(i,0).toString();  
+        String id = model.getValueAt(i,0).toString(); 
+        
+        int input = JOptionPane.showConfirmDialog(null, "Tem a certeza que pretende eliminar este utilizador?", "Confirmação", JOptionPane.YES_NO_OPTION);
+        
+        if (input == 0) {
         String query = "DELETE FROM login WHERE id = '"+id+"'";
         
         executeSQLQuery(query, "apagados");
@@ -425,7 +413,7 @@ Connection con = null;
             model.removeRow(i);
         }
         show_func();
-        
+        }
     }//GEN-LAST:event_buttonDeleteActionPerformed
 
     private void tableFuncsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableFuncsMouseClicked
@@ -484,7 +472,6 @@ Connection con = null;
     private javax.swing.JPanel backgroundPanel;
     private javax.swing.JButton buttonAdd;
     private javax.swing.JButton buttonBack;
-    private javax.swing.JButton buttonClear;
     private javax.swing.JButton buttonDelete;
     private javax.swing.JButton buttonExit;
     private javax.swing.JButton buttonUpdate;

@@ -307,6 +307,7 @@ public class products extends javax.swing.JFrame {
         productsAdd.pack();
         productsAdd.setLocationRelativeTo(null);
         productsAdd.getCategorias();
+        this.dispose();
     }//GEN-LAST:event_buttonAddActionPerformed
 
     private void buttonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBackActionPerformed
@@ -350,12 +351,16 @@ public class products extends javax.swing.JFrame {
         productsUpdate.setVisible(true);
         productsUpdate.pack();
         productsUpdate.setLocationRelativeTo(null);
+        this.dispose();
     }//GEN-LAST:event_buttonUpdateActionPerformed
 
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
         int i = tableProducts.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) tableProducts.getModel();
         String id = model.getValueAt(i,0).toString();
+        int input = JOptionPane.showConfirmDialog(null, "Tem a certeza que pretende eliminar este produto?", "Confirmação", JOptionPane.YES_NO_OPTION);
+        
+        if (input == 0) {
         String query = "DELETE FROM produtos WHERE cod_produto = '"+id+"'";
 
         executeSQLQuery(query, "apagados");
@@ -364,6 +369,7 @@ public class products extends javax.swing.JFrame {
             model.removeRow(i);
         }
         show_product();
+    }
         
     }//GEN-LAST:event_buttonDeleteActionPerformed
 

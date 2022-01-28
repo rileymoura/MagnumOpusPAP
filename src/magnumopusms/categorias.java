@@ -381,6 +381,9 @@ public class categorias extends javax.swing.JFrame {
         int i = tableCats.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) tableCats.getModel();
         String id = model.getValueAt(i,0).toString();
+        int input = JOptionPane.showConfirmDialog(null, "Tem a certeza que pretende eliminar esta categoria?", "Confirmação", JOptionPane.YES_NO_OPTION);
+        
+        if (input == 0) {
         String query = "DELETE FROM categorias WHERE cod_categoria = '"+id+"'";
 
         executeSQLQuery(query, "apagados");
@@ -388,7 +391,7 @@ public class categorias extends javax.swing.JFrame {
         for (i = rowCount -1; i >= 0; i--){
             model.removeRow(i);
         }
-        show_cat();
+        show_cat();}
     }//GEN-LAST:event_buttonDeleteActionPerformed
     public void search (String str){
         DefaultTableModel model = (DefaultTableModel) tableCats.getModel();
