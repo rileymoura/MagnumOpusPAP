@@ -636,7 +636,7 @@ public class ordersAdd extends javax.swing.JFrame {
                         query = "UPDATE produtos SET quant_disp = "+quant_final+" WHERE cod_produto = '"+model.getValueAt(i, 0)+"'";
                         executeSQLQuery(query, "verificada");
                     }else{
-                        JOptionPane.showMessageDialog(null, "Não existe quantidade suficiente do produto: "+model.getValueAt(i,1));
+                        JOptionPane.showMessageDialog(null, "Não existe quantidade suficiente do produto: "+model.getValueAt(i,1)+" \n\n Quantidade Disponível: "+quant_disp);
 
                     }}
             }
