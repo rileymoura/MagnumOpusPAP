@@ -346,6 +346,9 @@ public class clients extends javax.swing.JFrame {
         int i = tableClients.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) tableClients.getModel();
         String id = model.getValueAt(i,0).toString();
+        int input = JOptionPane.showConfirmDialog(null, "Tem a certeza que pretende eliminar este perfil de cliente?", "Confirmação", JOptionPane.YES_NO_OPTION);
+        
+        if (input == 0) {
         String query = "DELETE FROM clientes WHERE cod_cliente = '"+id+"'";
 
         executeSQLQuery(query, "apagados");
@@ -354,7 +357,7 @@ public class clients extends javax.swing.JFrame {
         for (i = rowCount -1; i >= 0; i--){
             model.removeRow(i);
         }
-        show_client();
+        show_client();}
     }//GEN-LAST:event_buttonDeleteActionPerformed
 
     private void fieldProcurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldProcurarActionPerformed
