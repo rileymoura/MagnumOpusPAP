@@ -51,16 +51,11 @@ public class ordersAdd extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
-    public void executeSQLQueryNoMessage(String query){
+    public void executeSQLQueryNOMSG(String query){
         Connection con = dbConnection.getConnection();
         Statement st;
         try{
             st = con.createStatement();
-            if(st.executeUpdate(query) == 1){
-                
-            }else{
-                JOptionPane.showMessageDialog(null, "Erro! (executeSQLQueryNoMessage)");
-            }
         }catch(Exception ex){
             JOptionPane.showMessageDialog(null, ex);
         }
@@ -620,24 +615,49 @@ public class ordersAdd extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonRemoveProdActionPerformed
 
     private void buttonNewOrder1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNewOrder1ActionPerformed
-        DefaultTableModel model = (DefaultTableModel)tableProductsS.getModel();
-        for(int i=0; i<model.getRowCount();i++){
-            String query = "INSERT INTO encomendas_produtos(cod_encomenda, cod_produto, quant,  preco_prods) VALUES ('"
-                    +fieldIdOrder.getText()+  "', '"+model.getValueAt(i, 0)+"', '"+model.getValueAt(i, 2)+"', '"
-                    +model.getValueAt(i, 3)+"')";
-            executeSQLQuery(query, "inserida");
+        DefaultTableModel model = (DefaultTableModel) tableProductsS.getModel();
+        PreparedStatement ps;
+        ResultSet rs;
+        try{
+            for(int i=0; i<model.getRowCount();i++){
+                String query = "SELECT quant_disp FROM produtos WHERE cod_produto = "+model.getValueAt(i, 0);
+                ps = dbConnection.getConnection().prepareStatement(query);
+                rs = ps.executeQuery();
+                if (rs.next()){
+                    int quant_disp = rs.getInt("quant_disp");
+                    int quant_order = (int) model.getValueAt(i,2);
+                    int quant_final = quant_disp - quant_order;
+                
+                    if (quant_final >= 0){
+                        query = "INSERT INTO encomendas_produtos(cod_encomenda, cod_produto, quant,  preco_prods) VALUES ('"
+                            +fieldIdOrder.getText()+  "', '"+model.getValueAt(i, 0)+"', '"+model.getValueAt(i, 2)+"', '"
+                            +model.getValueAt(i, 3)+"')";
+                        executeSQLQuery(query, "inserida");
+                        query = "UPDATE produtos SET quant_disp = "+quant_final+" WHERE cod_produto = '"+model.getValueAt(i, 0)+"'";
+                        executeSQLQuery(query, "verificada");
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Não existe quantidade suficiente do produto: "+model.getValueAt(i,1));
+
+                    }}
+            }
+            orders orders = new orders();
+            orders.setVisible(true);
+            orders.pack();
+            orders.setLocationRelativeTo(null);
+            DefaultTableModel model2 = (DefaultTableModel) orders.tableOrders.getModel();
+            int rowCount = model2.getRowCount();
+            for (int r = rowCount -1; r >= 0; r--){
+                 model2.removeRow(r);
+            }
+            orders.show_orders();
+            this.dispose();
+        }catch(SQLException ex){
+            Logger.getLogger(ordersAdd.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ex);
+            String query = "DELETE FROM encomendas WHERE cod_encomenda = '"+fieldIdOrder.getText()+"'";
+            executeSQLQuery(query, "cancelada");
         }
-        orders orders = new orders();
-        orders.setVisible(true);
-        orders.pack();
-        orders.setLocationRelativeTo(null);
-        DefaultTableModel model2 = (DefaultTableModel) orders.tableOrders.getModel();
-        int rowCount = model2.getRowCount();
-        for (int i = rowCount -1; i >= 0; i--){
-            model2.removeRow(i);
-        }
-        orders.show_orders();
-        this.dispose();
+        
     }//GEN-LAST:event_buttonNewOrder1ActionPerformed
 
     /**

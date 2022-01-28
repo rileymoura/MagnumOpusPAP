@@ -47,8 +47,9 @@ public class ordersCliente extends javax.swing.JFrame {
         ArrayList<Order> ordersList = new ArrayList<>();
         PreparedStatement ps;
         ResultSet rs;
-        String query= "SELECT EP.*, P.* FROM encomendas_produtos EP, produtos P "
-                + "WHERE EP.cod_encomenda = "+e_id+" "
+        String query;
+        query = "SELECT EP.*, P.* FROM encomendas_produtos EP, produtos P "
+                + "WHERE EP.cod_encomenda = "+orders.fieldId.getText()+" "
                 + "AND P.cod_produto = EP.cod_produto";
         try{
             ps = dbConnection.getConnection().prepareStatement(query);
@@ -75,8 +76,6 @@ public class ordersCliente extends javax.swing.JFrame {
             model.addRow(row);
         }
     }
-
-    public int e_id = Integer.parseInt(orders.fieldId.getText());
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
