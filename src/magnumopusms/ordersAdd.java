@@ -43,9 +43,9 @@ public class ordersAdd extends javax.swing.JFrame {
         try{
             st = con.createStatement();
             if(st.executeUpdate(query) == 1){
-                JOptionPane.showMessageDialog(null, "Encomenda "+message+" com sucesso");
+                JOptionPane.showMessageDialog(null, message+" com sucesso");
             }else{
-                JOptionPane.showMessageDialog(null, "Encomenda não "+message);
+                JOptionPane.showMessageDialog(null, message+" sem sucesso");
             }
         }catch(Exception ex){
             JOptionPane.showMessageDialog(null, ex);
@@ -169,7 +169,6 @@ public class ordersAdd extends javax.swing.JFrame {
         labelSelectedId = new javax.swing.JLabel();
         fieldIdOrder = new javax.swing.JTextField();
         labelSelectedId1 = new javax.swing.JLabel();
-        buttonNewOrder = new javax.swing.JButton();
         fieldProcurarEnc = new javax.swing.JTextField();
         fieldProcurarProd = new javax.swing.JTextField();
         buttonNewOrder1 = new javax.swing.JButton();
@@ -298,15 +297,6 @@ public class ordersAdd extends javax.swing.JFrame {
         labelSelectedId1.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         labelSelectedId1.setText("ID Encomenda:");
 
-        buttonNewOrder.setBackground(new java.awt.Color(255, 204, 102));
-        buttonNewOrder.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        buttonNewOrder.setText("NOVA ENCOMENDA");
-        buttonNewOrder.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonNewOrderActionPerformed(evt);
-            }
-        });
-
         fieldProcurarEnc.setFont(new java.awt.Font("Century Gothic", 1, 11)); // NOI18N
         fieldProcurarEnc.setText("Pesquisar...");
         fieldProcurarEnc.addActionListener(new java.awt.event.ActionListener() {
@@ -359,10 +349,7 @@ public class ordersAdd extends javax.swing.JFrame {
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(mainPanelLayout.createSequentialGroup()
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(mainPanelLayout.createSequentialGroup()
-                                        .addComponent(labelEncomendas)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(buttonNewOrder))
+                                    .addComponent(labelEncomendas)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                                         .addComponent(labelEncomendas3)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -410,9 +397,7 @@ public class ordersAdd extends javax.swing.JFrame {
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(labelEncomendas, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(buttonNewOrder))
+                        .addComponent(labelEncomendas, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -568,28 +553,6 @@ public class ordersAdd extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_fieldIdOrderActionPerformed
 
-    private void buttonNewOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNewOrderActionPerformed
-        try {
-            String query;
-            String id = fieldIdClient.getText();
-            query = "INSERT INTO encomendas (cod_cliente) VALUES ("+id+")";
-            PreparedStatement ps;
-            ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            ps.execute();
-            
-            ResultSet rs =  ps.getGeneratedKeys();
-            int generatedKey;
-            if (rs.next()){
-                generatedKey = rs.getInt(1);
-                fieldIdOrder.setText(String.valueOf(generatedKey));
-            }
-            JOptionPane.showMessageDialog(null, "Encomenda iniciada");
-        } catch (SQLException ex) {
-            Logger.getLogger(ordersAdd.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, ex);
-        }
-    }//GEN-LAST:event_buttonNewOrderActionPerformed
-
     private void fieldProcurarEncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldProcurarEncActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_fieldProcurarEncActionPerformed
@@ -629,15 +592,40 @@ public class ordersAdd extends javax.swing.JFrame {
                     int quant_final = quant_disp - quant_order;
                 
                     if (quant_final >= 0){
-                        query = "INSERT INTO encomendas_produtos(cod_encomenda, cod_produto, quant,  preco_prods) VALUES ('"
+                        try{
+                            String id = fieldIdClient.getText();
+                       
+                        query = "INSERT INTO encomendas (cod_cliente) VALUES ("+id+")";
+
+                        ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                        ps.execute();
+
+                        rs =  ps.getGeneratedKeys();
+                        int generatedKey;
+                        if (rs.next()){
+                            generatedKey = rs.getInt(1);
+                            fieldIdOrder.setText(String.valueOf(generatedKey));
+                        }else{
+                            query = "DELETE FROM encomendas WHERE cod_encomenda = '"+fieldIdOrder.getText()+"'";
+                            executeSQLQuery(query, "cancelada");
+                        }
+                            JOptionPane.showMessageDialog(null, "Encomenda iniciada");
+                            query = "INSERT INTO encomendas_produtos(cod_encomenda, cod_produto, quant,  preco_prods) VALUES ('"
                             +fieldIdOrder.getText()+  "', '"+model.getValueAt(i, 0)+"', '"+model.getValueAt(i, 2)+"', '"
                             +model.getValueAt(i, 3)+"')";
-                        executeSQLQuery(query, "inserida");
-                        query = "UPDATE produtos SET quant_disp = "+quant_final+" WHERE cod_produto = '"+model.getValueAt(i, 0)+"'";
-                        executeSQLQuery(query, "verificada");
+                            executeSQLQuery(query, "Produtos inseridos");
+                            query = "UPDATE produtos SET quant_disp = "+quant_final+" WHERE cod_produto = '"+model.getValueAt(i, 0)+"'";
+                            executeSQLQuery(query, "Produtos verificados");
+                        }catch(SQLException ex){
+                            Logger.getLogger(ordersAdd.class.getName()).log(Level.SEVERE, null, ex);
+                            JOptionPane.showMessageDialog(null, ex);
+                            query = "DELETE FROM encomendas WHERE cod_encomenda = '"+fieldIdOrder.getText()+"'";
+                            executeSQLQuery(query, "Encomenda cancelada");
+                        }
                     }else{
                         JOptionPane.showMessageDialog(null, "Não existe quantidade suficiente do produto: "+model.getValueAt(i,1)+" \n\n Quantidade Disponível: "+quant_disp);
-
+                        query = "DELETE FROM encomendas WHERE cod_encomenda = '"+fieldIdOrder.getText()+"'";
+                        executeSQLQuery(query, "cancelada");
                     }}
             }
             orders orders = new orders();
@@ -700,7 +688,6 @@ public class ordersAdd extends javax.swing.JFrame {
     private javax.swing.JButton buttonAddProd;
     private javax.swing.JButton buttonBack;
     private javax.swing.JButton buttonExit;
-    private javax.swing.JButton buttonNewOrder;
     private javax.swing.JButton buttonNewOrder1;
     private javax.swing.JButton buttonRemoveProd;
     public static javax.swing.JTextField fieldIdClient;

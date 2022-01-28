@@ -111,6 +111,7 @@ public class orders extends javax.swing.JFrame {
         buttonUpdate = new javax.swing.JButton();
         estadoComboBox = new javax.swing.JComboBox<>();
         fieldProcurar = new javax.swing.JTextField();
+        buttonUpdateProds = new javax.swing.JButton();
         labelMOpus2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -198,7 +199,7 @@ public class orders extends javax.swing.JFrame {
         });
 
         estadoComboBox.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        estadoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Em Processamento", "Pronta para Levantamento", "Levantada em Loja", "Enviada", "Entregue", "Cancelada", "Venda Em Loja" }));
+        estadoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Criada", "Em Processamento", "Pronta para Levantamento", "Levantada em Loja", "Enviada", "Entregue", "Cancelada", "Venda Em Loja" }));
         estadoComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 estadoComboBoxActionPerformed(evt);
@@ -218,6 +219,15 @@ public class orders extends javax.swing.JFrame {
             }
         });
 
+        buttonUpdateProds.setBackground(new java.awt.Color(255, 204, 102));
+        buttonUpdateProds.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        buttonUpdateProds.setText("EDITAR PRODUTOS");
+        buttonUpdateProds.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonUpdateProdsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -234,7 +244,6 @@ public class orders extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buttonProds, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonUpdate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonAdd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
@@ -244,7 +253,10 @@ public class orders extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                         .addComponent(labelEstado)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(estadoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(estadoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(buttonUpdateProds, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonProds, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
@@ -269,7 +281,9 @@ public class orders extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(buttonUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(buttonProds, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(buttonProds, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(buttonUpdateProds, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -410,6 +424,21 @@ public class orders extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_estadoComboBoxActionPerformed
 
+    private void buttonUpdateProdsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUpdateProdsActionPerformed
+        DefaultTableModel model = (DefaultTableModel) tableOrders.getModel();
+        int i = tableOrders.getSelectedRow();
+        String estado = model.getValueAt(i, 4).toString();
+        if (estado.equals("Criada")){
+            ordersUpdate ordersUpdate = new ordersUpdate();
+            ordersUpdate.setVisible(true);
+            ordersUpdate.pack();
+            ordersUpdate.setLocationRelativeTo(null);
+            this.dispose();
+        }else{
+            JOptionPane.showMessageDialog(null, "Apenas é possível a alteração de produtos de encomendas com o estado 'Criada'! \n\n Estado da encomenda: "+estado , "Erro!" , 2);
+        }
+    }//GEN-LAST:event_buttonUpdateProdsActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -452,6 +481,7 @@ public class orders extends javax.swing.JFrame {
     private javax.swing.JButton buttonExit;
     private javax.swing.JButton buttonProds;
     private javax.swing.JButton buttonUpdate;
+    private javax.swing.JButton buttonUpdateProds;
     private javax.swing.JComboBox<String> estadoComboBox;
     public static javax.swing.JTextField fieldId;
     private javax.swing.JTextField fieldProcurar;
