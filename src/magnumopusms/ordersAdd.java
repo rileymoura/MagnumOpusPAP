@@ -607,7 +607,7 @@ public class ordersAdd extends javax.swing.JFrame {
                             fieldIdOrder.setText(String.valueOf(generatedKey));
                         }else{
                             query = "DELETE FROM encomendas WHERE cod_encomenda = '"+fieldIdOrder.getText()+"'";
-                            executeSQLQuery(query, "cancelada");
+                            executeSQLQuery(query, "Encomenda cancelada");
                         }
                             JOptionPane.showMessageDialog(null, "Encomenda iniciada");
                             query = "INSERT INTO encomendas_produtos(cod_encomenda, cod_produto, quant,  preco_prods) VALUES ('"
