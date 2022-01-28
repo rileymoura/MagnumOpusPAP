@@ -198,7 +198,7 @@ public class orders extends javax.swing.JFrame {
         });
 
         estadoComboBox.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        estadoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Em Processamento", "Enviada", "Entregue", "Cancelada", "Venda Em Loja" }));
+        estadoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Em Processamento", "Pronta para Levantamento", "Levantada em Loja", "Enviada", "Entregue", "Cancelada", "Venda Em Loja" }));
         estadoComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 estadoComboBoxActionPerformed(evt);
