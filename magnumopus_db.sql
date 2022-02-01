@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 28-Jan-2022 às 13:05
+-- Generation Time: 01-Fev-2022 às 17:08
 -- Versão do servidor: 5.7.11
 -- PHP Version: 5.6.19
 
@@ -39,7 +39,8 @@ INSERT INTO `categorias` (`cod_categoria`, `nome_categoria`) VALUES
 (1, 'Guitarras'),
 (3, 'Baterias'),
 (4, 'Baixos'),
-(5, 'Piano');
+(5, 'Piano'),
+(6, 'Reco-recos');
 
 -- --------------------------------------------------------
 
@@ -78,6 +79,13 @@ CREATE TABLE `encomendas` (
   `estado` varchar(25) DEFAULT 'Em Processamento'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Extraindo dados da tabela `encomendas`
+--
+
+INSERT INTO `encomendas` (`cod_encomenda`, `cod_cliente`, `preco_total`, `data`, `estado`) VALUES
+(1, 3, 1.13, '2022-02-01 15:39:53', 'Em Processamento');
+
 -- --------------------------------------------------------
 
 --
@@ -91,6 +99,13 @@ CREATE TABLE `encomendas_produtos` (
   `quant` int(11) UNSIGNED NOT NULL,
   `preco_prods` float UNSIGNED DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `encomendas_produtos`
+--
+
+INSERT INTO `encomendas_produtos` (`cod_encprod`, `cod_encomenda`, `cod_produto`, `quant`, `preco_prods`) VALUES
+(1, 1, 3, 1, 1.13);
 
 --
 -- Acionadores `encomendas_produtos`
@@ -152,7 +167,7 @@ CREATE TABLE `login` (
 
 INSERT INTO `login` (`id`, `nome_func`, `username`, `password`, `tipo_user`) VALUES
 (1, 'Administrador Magnum Opus', 'admin', 'adminmopus', 'admin'),
-(2, 'TEST USER', '', '', 'user');
+(2, 'Test User', '', '', 'user');
 
 -- --------------------------------------------------------
 
@@ -166,8 +181,8 @@ CREATE TABLE `produtos` (
   `cod_categoria` int(11) NOT NULL,
   `cod_subcategoria` int(11) NOT NULL,
   `quant_disp` int(11) UNSIGNED NOT NULL,
-  `preco` float UNSIGNED DEFAULT NULL,
-  `valor_iva` float UNSIGNED DEFAULT NULL,
+  `preco` float DEFAULT NULL,
+  `valor_iva` float DEFAULT NULL,
   `preco_civa` float GENERATED ALWAYS AS ((`preco` + `valor_iva`)) VIRTUAL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -176,8 +191,7 @@ CREATE TABLE `produtos` (
 --
 
 INSERT INTO `produtos` (`cod_produto`, `nome_produto`, `cod_categoria`, `cod_subcategoria`, `quant_disp`, `preco`, `valor_iva`, `preco_civa`) VALUES
-(2, 'Millenium Focus Junior Drum Set Black', 3, 3, 4, 15, 1.95, 16.95),
-(3, 'Harley Benton JB-75MN Black Vintage Series', 4, 4, 5, 20, 2.6, 22.6);
+(3, 'a', 1, 1, 0, 1, 0.13, 1.13);
 
 --
 -- Acionadores `produtos`
@@ -224,14 +238,6 @@ INSERT INTO `sub_categorias` (`cod_subcategoria`, `nome_subcategoria`, `cod_cate
 (4, 'Baixo Elétrico', 4, 0.13);
 
 --
--- Acionadores `sub_categorias`
---
-DELIMITER $$
-CREATE TRIGGER `trigger_iva_up` AFTER UPDATE ON `sub_categorias` FOR EACH ROW UPDATE produtos SET valor_iva = preco * NEW.iva
-$$
-DELIMITER ;
-
---
 -- Indexes for dumped tables
 --
 
@@ -251,39 +257,32 @@ ALTER TABLE `clientes`
 -- Indexes for table `encomendas`
 --
 ALTER TABLE `encomendas`
-  ADD PRIMARY KEY (`cod_encomenda`),
-  ADD KEY `cod_cliente` (`cod_cliente`);
+  ADD PRIMARY KEY (`cod_encomenda`);
 
 --
 -- Indexes for table `encomendas_produtos`
 --
 ALTER TABLE `encomendas_produtos`
-  ADD PRIMARY KEY (`cod_encprod`),
-  ADD KEY `cod_produto` (`cod_produto`),
-  ADD KEY `cod_encomenda` (`cod_encomenda`);
+  ADD PRIMARY KEY (`cod_encprod`);
 
 --
 -- Indexes for table `login`
 --
 ALTER TABLE `login`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username_2` (`username`),
-  ADD KEY `username` (`username`);
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- Indexes for table `produtos`
 --
 ALTER TABLE `produtos`
-  ADD PRIMARY KEY (`cod_produto`),
-  ADD KEY `cod_categoria` (`cod_categoria`),
-  ADD KEY `cod_subcategoria` (`cod_subcategoria`);
+  ADD PRIMARY KEY (`cod_produto`);
 
 --
 -- Indexes for table `sub_categorias`
 --
 ALTER TABLE `sub_categorias`
-  ADD PRIMARY KEY (`cod_subcategoria`),
-  ADD KEY `cod_categoria` (`cod_categoria`);
+  ADD PRIMARY KEY (`cod_subcategoria`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -293,7 +292,7 @@ ALTER TABLE `sub_categorias`
 -- AUTO_INCREMENT for table `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `cod_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `cod_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `clientes`
 --
@@ -303,12 +302,12 @@ ALTER TABLE `clientes`
 -- AUTO_INCREMENT for table `encomendas`
 --
 ALTER TABLE `encomendas`
-  MODIFY `cod_encomenda` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cod_encomenda` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `encomendas_produtos`
 --
 ALTER TABLE `encomendas_produtos`
-  MODIFY `cod_encprod` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cod_encprod` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `login`
 --
@@ -324,36 +323,6 @@ ALTER TABLE `produtos`
 --
 ALTER TABLE `sub_categorias`
   MODIFY `cod_subcategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
--- Constraints for dumped tables
---
-
---
--- Limitadores para a tabela `encomendas`
---
-ALTER TABLE `encomendas`
-  ADD CONSTRAINT `encomendas_ibfk_1` FOREIGN KEY (`cod_cliente`) REFERENCES `clientes` (`cod_cliente`);
-
---
--- Limitadores para a tabela `encomendas_produtos`
---
-ALTER TABLE `encomendas_produtos`
-  ADD CONSTRAINT `encomendas_produtos_ibfk_1` FOREIGN KEY (`cod_encomenda`) REFERENCES `encomendas` (`cod_encomenda`),
-  ADD CONSTRAINT `encomendas_produtos_ibfk_2` FOREIGN KEY (`cod_produto`) REFERENCES `produtos` (`cod_produto`);
-
---
--- Limitadores para a tabela `produtos`
---
-ALTER TABLE `produtos`
-  ADD CONSTRAINT `produtos_ibfk_1` FOREIGN KEY (`cod_categoria`) REFERENCES `categorias` (`cod_categoria`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `produtos_ibfk_2` FOREIGN KEY (`cod_subcategoria`) REFERENCES `sub_categorias` (`cod_subcategoria`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Limitadores para a tabela `sub_categorias`
---
-ALTER TABLE `sub_categorias`
-  ADD CONSTRAINT `sub_categorias_ibfk_1` FOREIGN KEY (`cod_categoria`) REFERENCES `categorias` (`cod_categoria`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
