@@ -28,7 +28,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `categorias` (
   `cod_categoria` int(11) NOT NULL,
-  `nome_categoria` varchar(50) NOT NULL
+  `nome_categoria` varchar(50) NOT NULL,
+  PRIMARY KEY (`cod_categoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -55,7 +56,8 @@ CREATE TABLE `clientes` (
   `cod_postal` varchar(8) NOT NULL,
   `localidade` varchar(50) NOT NULL,
   `cidade` text NOT NULL,
-  `num_tel` int(9) NOT NULL
+  `num_tel` int(9) NOT NULL,
+  PRIMARY KEY (`cod_cliente`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -76,7 +78,9 @@ CREATE TABLE `encomendas` (
   `cod_cliente` int(11) NOT NULL,
   `preco_total` float UNSIGNED NOT NULL DEFAULT '0',
   `data` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `estado` varchar(25) DEFAULT 'Em Processamento'
+  `estado` varchar(25) DEFAULT 'Em Processamento',
+  PRIMARY KEY (`cod_encomenda`),
+  KEY `cod_cliente` (`cod_cliente`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -97,7 +101,10 @@ CREATE TABLE `encomendas_produtos` (
   `cod_encomenda` int(11) NOT NULL,
   `cod_produto` int(11) NOT NULL,
   `quant` int(11) UNSIGNED NOT NULL,
-  `preco_prods` float UNSIGNED DEFAULT '0'
+  `preco_prods` float DEFAULT '0'
+  PRIMARY KEY (`cod_encprod`),
+  KEY `cod_produto` (`cod_produto`),
+  KEY `cod_encomenda` (`cod_encomenda`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -158,7 +165,10 @@ CREATE TABLE `login` (
   `nome_func` text NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(35) NOT NULL,
-  `tipo_user` varchar(10) NOT NULL DEFAULT 'user'
+  `tipo_user` varchar(10) NOT NULL DEFAULT 'user',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username_2` (`username`),
+  KEY `username` (`username`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
@@ -183,7 +193,10 @@ CREATE TABLE `produtos` (
   `quant_disp` int(11) UNSIGNED NOT NULL,
   `preco` float DEFAULT NULL,
   `valor_iva` float DEFAULT NULL,
-  `preco_civa` float GENERATED ALWAYS AS ((`preco` + `valor_iva`)) VIRTUAL
+  `preco_civa` float GENERATED ALWAYS AS ((`preco` + `valor_iva`)) VIRTUAL,
+  PRIMARY KEY (`cod_produto`),
+  KEY `cod_categoria` (`cod_categoria`),
+  KEY `cod_subcategoria` (`cod_subcategoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -221,12 +234,16 @@ DELIMITER ;
 -- Estrutura da tabela `sub_categorias`
 --
 
-CREATE TABLE `sub_categorias` (
+
+  CREATE TABLE `sub_categorias` (
   `cod_subcategoria` int(11) NOT NULL,
   `nome_subcategoria` varchar(50) NOT NULL,
   `cod_categoria` int(11) NOT NULL,
-  `iva` float UNSIGNED NOT NULL DEFAULT '0.13'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `iva` float NOT NULL DEFAULT '0.13',
+  PRIMARY KEY (`cod_subcategoria`),
+  KEY `cod_categoria` (`cod_categoria`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
 
 --
 -- Extraindo dados da tabela `sub_categorias`
@@ -236,53 +253,6 @@ INSERT INTO `sub_categorias` (`cod_subcategoria`, `nome_subcategoria`, `cod_cate
 (1, 'Guitarras Elétricas', 1, 0.13),
 (3, 'Bateria Acustica', 3, 0.13),
 (4, 'Baixo Elétrico', 4, 0.13);
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `categorias`
---
-ALTER TABLE `categorias`
-  ADD PRIMARY KEY (`cod_categoria`);
-
---
--- Indexes for table `clientes`
---
-ALTER TABLE `clientes`
-  ADD PRIMARY KEY (`cod_cliente`);
-
---
--- Indexes for table `encomendas`
---
-ALTER TABLE `encomendas`
-  ADD PRIMARY KEY (`cod_encomenda`);
-
---
--- Indexes for table `encomendas_produtos`
---
-ALTER TABLE `encomendas_produtos`
-  ADD PRIMARY KEY (`cod_encprod`);
-
---
--- Indexes for table `login`
---
-ALTER TABLE `login`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username` (`username`);
-
---
--- Indexes for table `produtos`
---
-ALTER TABLE `produtos`
-  ADD PRIMARY KEY (`cod_produto`);
-
---
--- Indexes for table `sub_categorias`
---
-ALTER TABLE `sub_categorias`
-  ADD PRIMARY KEY (`cod_subcategoria`);
 
 --
 -- AUTO_INCREMENT for dumped tables
