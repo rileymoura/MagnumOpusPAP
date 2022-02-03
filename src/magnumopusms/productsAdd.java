@@ -131,6 +131,7 @@ public class productsAdd extends javax.swing.JFrame {
         fieldQuant = new javax.swing.JTextField();
         fieldPrice = new javax.swing.JTextField();
         labelPrice = new javax.swing.JLabel();
+        buttonBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -212,6 +213,15 @@ public class productsAdd extends javax.swing.JFrame {
         labelPrice.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         labelPrice.setText("Preço");
 
+        buttonBack.setBackground(new java.awt.Color(255, 204, 102));
+        buttonBack.setFont(new java.awt.Font("Century Gothic", 1, 11)); // NOI18N
+        buttonBack.setText("VOLTAR");
+        buttonBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -239,6 +249,10 @@ public class productsAdd extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 158, Short.MAX_VALUE)
                         .addComponent(buttonUpdate)))
                 .addGap(55, 55, 55))
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(buttonBack)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -270,8 +284,10 @@ public class productsAdd extends javax.swing.JFrame {
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fieldPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
                 .addComponent(labelArea, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3)
+                .addComponent(buttonBack)
                 .addContainerGap())
         );
 
@@ -372,6 +388,14 @@ public class productsAdd extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_fieldPriceActionPerformed
 
+    private void buttonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBackActionPerformed
+        products products = new products();
+        products.setVisible(true);
+        products.pack();
+        products.setLocationRelativeTo(null);
+        this.dispose();
+    }//GEN-LAST:event_buttonBackActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -409,6 +433,7 @@ public class productsAdd extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel backgroundPanel;
+    private javax.swing.JButton buttonBack;
     private javax.swing.JButton buttonExit;
     private javax.swing.JButton buttonUpdate;
     public javax.swing.JComboBox<String> categoriaComboBox;

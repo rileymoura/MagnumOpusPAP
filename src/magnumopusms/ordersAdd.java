@@ -534,15 +534,44 @@ public class ordersAdd extends javax.swing.JFrame {
         int i = tableProducts.getSelectedRow();
         TableModel model = tableProducts.getModel();
         DefaultTableModel model2 = (DefaultTableModel)tableProductsS.getModel();
-        int quantidade = (int) jSpinnerQuantidade.getValue();
-        float preco = (float) model.getValueAt(i, 7);
-        Object[] row = new Object[4];
-        row[0] = model.getValueAt(i, 0).toString();
-        row[1] = model.getValueAt(i, 1).toString();
-        row[2] = quantidade;
-        row[3] = quantidade * preco;
+        int selectedId = (int) model.getValueAt(i,0);
+        int rowCount = (int) model2.getRowCount();
+        if (rowCount == 0){
+            int quantidade = (int) jSpinnerQuantidade.getValue();
+                    if (quantidade > 0){
+                        float preco = (float) model.getValueAt(i, 7);
+                        Object[] row = new Object[4];
+                        row[0] = model.getValueAt(i, 0).toString();
+                        row[1] = model.getValueAt(i, 1).toString();
+                        row[2] = quantidade;
+                        row[3] = quantidade * preco;
         
-        model2.addRow(row);
+                        model2.addRow(row);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "A quantidade selecionada tem que ser maior que zero!");
+                    }
+        }else{
+        for (int x = 0; x < rowCount ; x++){
+            int currentId = Integer.parseInt(model2.getValueAt(x, 0).toString());
+            if (currentId == selectedId){
+                JOptionPane.showMessageDialog(null, "Este produto já se encontra selecionado!");
+            }else{
+                    int quantidade = (int) jSpinnerQuantidade.getValue();
+                    if (quantidade < 0){
+                        float preco = (float) model.getValueAt(i, 7);
+                        Object[] row = new Object[4];
+                        row[0] = model.getValueAt(i, 0).toString();
+                        row[1] = model.getValueAt(i, 1).toString();
+                        row[2] = quantidade;
+                        row[3] = quantidade * preco;
+        
+                        model2.addRow(row);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "A quantidade selecionada tem que ser maior que zero!");
+                    }
+            }
+        }
+       }
     }//GEN-LAST:event_buttonAddProdActionPerformed
 
     private void fieldIdClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldIdClientActionPerformed
@@ -590,7 +619,6 @@ public class ordersAdd extends javax.swing.JFrame {
                     int quant_disp = rs.getInt("quant_disp");
                     int quant_order = (int) model.getValueAt(i,2);
                     int quant_final = quant_disp - quant_order;
-                
                     if (quant_final >= 0){
                         try{
                             String id = fieldIdClient.getText();
@@ -608,6 +636,17 @@ public class ordersAdd extends javax.swing.JFrame {
                         }else{
                             query = "DELETE FROM encomendas WHERE cod_encomenda = '"+fieldIdOrder.getText()+"'";
                             executeSQLQuery(query, "Encomenda cancelada");
+                            orders orders = new orders();
+                            orders.setVisible(true);
+                            orders.pack();
+                            orders.setLocationRelativeTo(null);
+                            DefaultTableModel model2 = (DefaultTableModel) orders.tableOrders.getModel();
+                            int rowCount = model2.getRowCount();
+                            for (int r = rowCount -1; r >= 0; r--){
+                                model2.removeRow(r);
+                            }
+                            orders.show_orders();
+                            this.dispose();
                         }
                             JOptionPane.showMessageDialog(null, "Encomenda iniciada");
                             query = "INSERT INTO encomendas_produtos(cod_encomenda, cod_produto, quant,  preco_prods) VALUES ('"
@@ -615,17 +654,47 @@ public class ordersAdd extends javax.swing.JFrame {
                             +model.getValueAt(i, 3)+"')";
                             executeSQLQuery(query, "Produtos inseridos");
                             query = "UPDATE produtos SET quant_disp = "+quant_final+" WHERE cod_produto = '"+model.getValueAt(i, 0)+"'";
-                            executeSQLQuery(query, "Produtos verificados");
+                            executeSQLQuery(query, "Inventário atualizado");
+                            orders orders = new orders();
+                            orders.setVisible(true);
+                            orders.pack();
+                            orders.setLocationRelativeTo(null);
+                            DefaultTableModel model2 = (DefaultTableModel) orders.tableOrders.getModel();
+                            int rowCount = model2.getRowCount();
+                            for (int r = rowCount -1; r >= 0; r--){
+                                model2.removeRow(r);
+                            }
+                            orders.show_orders();
+                            this.dispose();
                         }catch(SQLException ex){
                             Logger.getLogger(ordersAdd.class.getName()).log(Level.SEVERE, null, ex);
                             JOptionPane.showMessageDialog(null, ex);
+                            query = "DELETE FROM encomendas_produtos WHERE cod_encomenda = '"+fieldIdOrder.getText()+"'";
+                            executeSQLQuery(query, "Produtos eliminados");
                             query = "DELETE FROM encomendas WHERE cod_encomenda = '"+fieldIdOrder.getText()+"'";
                             executeSQLQuery(query, "Encomenda cancelada");
+                            orders orders = new orders();
+                            orders.setVisible(true);
+                            orders.pack();
+                            orders.setLocationRelativeTo(null);
+                            DefaultTableModel model2 = (DefaultTableModel) orders.tableOrders.getModel();
+                            int rowCount = model2.getRowCount();
+                            for (int r = rowCount -1; r >= 0; r--){
+                                model2.removeRow(r);
+                            }
+                            orders.show_orders();
+                            this.dispose();
                         }
                     }else{
                         JOptionPane.showMessageDialog(null, "Não existe quantidade suficiente do produto: "+model.getValueAt(i,1)+" \n\n Quantidade Disponível: "+quant_disp);
-                    }}
+                    }
+                }
             }
+        }catch(SQLException ex){
+            Logger.getLogger(ordersAdd.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ex);
+            String query = "DELETE FROM encomendas WHERE cod_encomenda = '"+fieldIdOrder.getText()+"'";
+            executeSQLQuery(query, "cancelada");
             orders orders = new orders();
             orders.setVisible(true);
             orders.pack();
@@ -633,15 +702,10 @@ public class ordersAdd extends javax.swing.JFrame {
             DefaultTableModel model2 = (DefaultTableModel) orders.tableOrders.getModel();
             int rowCount = model2.getRowCount();
             for (int r = rowCount -1; r >= 0; r--){
-                 model2.removeRow(r);
+                model2.removeRow(r);
             }
             orders.show_orders();
             this.dispose();
-        }catch(SQLException ex){
-            Logger.getLogger(ordersAdd.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, ex);
-            String query = "DELETE FROM encomendas WHERE cod_encomenda = '"+fieldIdOrder.getText()+"'";
-            executeSQLQuery(query, "cancelada");
         }
         
     }//GEN-LAST:event_buttonNewOrder1ActionPerformed

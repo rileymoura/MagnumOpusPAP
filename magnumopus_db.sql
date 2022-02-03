@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.5.1
--- http://www.phpmyadmin.net
+-- version 5.0.2
+-- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: 03-Fev-2022 às 12:19
--- Versão do servidor: 5.7.11
--- PHP Version: 5.6.19
+-- Host: 127.0.0.1:3306
+-- Tempo de geração: 03-Fev-2022 às 18:29
+-- Versão do servidor: 5.7.31
+-- versão do PHP: 7.3.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -17,10 +18,8 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `magnumopus_db`
+-- Banco de dados: `magnumopus_db`
 --
-CREATE DATABASE IF NOT EXISTS `magnumopus_db` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `magnumopus_db`;
 
 -- --------------------------------------------------------
 
@@ -39,11 +38,12 @@ CREATE TABLE IF NOT EXISTS `categorias` (
 -- Extraindo dados da tabela `categorias`
 --
 
-INSERT INTO `categorias` VALUES(1, 'Guitarras');
-INSERT INTO `categorias` VALUES(3, 'Baterias');
-INSERT INTO `categorias` VALUES(4, 'Baixos');
-INSERT INTO `categorias` VALUES(5, 'Piano');
-INSERT INTO `categorias` VALUES(6, 'Reco-recos');
+INSERT INTO `categorias` (`cod_categoria`, `nome_categoria`) VALUES
+(1, 'Guitarras'),
+(3, 'Baterias'),
+(4, 'Baixos'),
+(5, 'Piano'),
+(6, 'Reco-recos');
 
 -- --------------------------------------------------------
 
@@ -67,7 +67,8 @@ CREATE TABLE IF NOT EXISTS `clientes` (
 -- Extraindo dados da tabela `clientes`
 --
 
-INSERT INTO `clientes` VALUES(3, 'Nuno Moura', 'Rua 1 , 123', '1234-567', 'Localidade', 'Cidade', 912345678);
+INSERT INTO `clientes` (`cod_cliente`, `nome_cliente`, `morada`, `cod_postal`, `localidade`, `cidade`, `num_tel`) VALUES
+(3, 'Nuno Moura', 'Rua 1 , 123', '1234-567', 'Localidade', 'Cidade', 912345678);
 
 -- --------------------------------------------------------
 
@@ -90,7 +91,8 @@ CREATE TABLE IF NOT EXISTS `encomendas` (
 -- Extraindo dados da tabela `encomendas`
 --
 
-INSERT INTO `encomendas` VALUES(1, 3, 1.13, '2022-02-01 15:39:53', 'Em Processamento');
+INSERT INTO `encomendas` (`cod_encomenda`, `cod_cliente`, `preco_total`, `data`, `estado`) VALUES
+(1, 3, 1.13, '2022-02-01 15:39:53', 'Em Processamento');
 
 -- --------------------------------------------------------
 
@@ -175,8 +177,9 @@ CREATE TABLE IF NOT EXISTS `login` (
 -- Extraindo dados da tabela `login`
 --
 
-INSERT INTO `login` VALUES(1, 'Administrador Magnum Opus', 'admin', 'adminmopus', 'admin');
-INSERT INTO `login` VALUES(2, 'Test User', '', '', 'user');
+INSERT INTO `login` (`id`, `nome_func`, `username`, `password`, `tipo_user`) VALUES
+(1, 'Administrador Magnum Opus', 'admin', 'adminmopus', 'admin'),
+(2, 'Test User', '', '', 'user');
 
 -- --------------------------------------------------------
 
@@ -199,6 +202,30 @@ CREATE TABLE IF NOT EXISTS `produtos` (
   KEY `cod_subcategoria` (`cod_subcategoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Acionadores `produtos`
+--
+DROP TRIGGER IF EXISTS `trigger_valor_iva_in`;
+DELIMITER $$
+CREATE TRIGGER `trigger_valor_iva_in` BEFORE INSERT ON `produtos` FOR EACH ROW SET NEW.valor_iva = 
+  (
+    SELECT NEW.preco * iva
+      FROM sub_categorias
+     WHERE NEW.cod_subcategoria = cod_subcategoria
+  )
+$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `trigger_valor_iva_up`;
+DELIMITER $$
+CREATE TRIGGER `trigger_valor_iva_up` BEFORE UPDATE ON `produtos` FOR EACH ROW SET NEW.valor_iva = 
+  (
+    SELECT NEW.preco * iva
+      FROM sub_categorias
+     WHERE NEW.cod_subcategoria = cod_subcategoria
+  )
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -216,7 +243,7 @@ CREATE TABLE IF NOT EXISTS `sub_categorias` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Constraints for dumped tables
+-- Restrições para despejos de tabelas
 --
 
 --
@@ -244,6 +271,7 @@ ALTER TABLE `produtos`
 --
 ALTER TABLE `sub_categorias`
   ADD CONSTRAINT `sub_categorias_ibfk_1` FOREIGN KEY (`cod_categoria`) REFERENCES `categorias` (`cod_categoria`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
