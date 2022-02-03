@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 03-Fev-2022 às 18:29
+-- Tempo de geração: 03-Fev-2022 às 21:39
 -- Versão do servidor: 5.7.31
 -- versão do PHP: 7.3.21
 
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `categorias` (
   `cod_categoria` int(11) NOT NULL AUTO_INCREMENT,
   `nome_categoria` varchar(50) NOT NULL,
   PRIMARY KEY (`cod_categoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `categorias`
@@ -43,7 +43,7 @@ INSERT INTO `categorias` (`cod_categoria`, `nome_categoria`) VALUES
 (3, 'Baterias'),
 (4, 'Baixos'),
 (5, 'Piano'),
-(6, 'Reco-recos');
+(7, 'Acessórios');
 
 -- --------------------------------------------------------
 
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `clientes` (
   `cidade` text NOT NULL,
   `num_tel` int(9) NOT NULL,
   PRIMARY KEY (`cod_cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `clientes`
@@ -85,14 +85,17 @@ CREATE TABLE IF NOT EXISTS `encomendas` (
   `estado` varchar(25) DEFAULT 'Em Processamento',
   PRIMARY KEY (`cod_encomenda`),
   KEY `cod_cliente` (`cod_cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `encomendas`
 --
 
 INSERT INTO `encomendas` (`cod_encomenda`, `cod_cliente`, `preco_total`, `data`, `estado`) VALUES
-(1, 3, 1.13, '2022-02-01 15:39:53', 'Em Processamento');
+(1, 3, 0, '2022-02-03 18:55:38', 'Cancelada'),
+(2, 3, 17085.6, '2022-02-03 19:54:31', 'Cancelada'),
+(3, 3, 271.2, '2022-02-03 20:04:05', 'Criada'),
+(4, 3, 406.8, '2022-02-03 21:02:42', 'Em Processamento');
 
 -- --------------------------------------------------------
 
@@ -110,7 +113,16 @@ CREATE TABLE IF NOT EXISTS `encomendas_produtos` (
   PRIMARY KEY (`cod_encprod`),
   KEY `cod_encomenda` (`cod_encomenda`),
   KEY `cod_produto` (`cod_produto`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `encomendas_produtos`
+--
+
+INSERT INTO `encomendas_produtos` (`cod_encprod`, `cod_encomenda`, `cod_produto`, `quant`, `preco_prods`) VALUES
+(1, 2, 1, 126, 17085.6),
+(2, 3, 1, 2, 271.2),
+(3, 4, 1, 3, 406.8);
 
 --
 -- Acionadores `encomendas_produtos`
@@ -171,7 +183,7 @@ CREATE TABLE IF NOT EXISTS `login` (
   `tipo_user` varchar(10) NOT NULL DEFAULT 'user',
   PRIMARY KEY (`username`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `login`
@@ -200,7 +212,14 @@ CREATE TABLE IF NOT EXISTS `produtos` (
   PRIMARY KEY (`cod_produto`),
   KEY `cod_categoria` (`cod_categoria`),
   KEY `cod_subcategoria` (`cod_subcategoria`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `produtos`
+--
+
+INSERT INTO `produtos` (`cod_produto`, `nome_produto`, `cod_categoria`, `cod_subcategoria`, `quant_disp`, `preco`, `valor_iva`) VALUES
+(1, 'AAAAA', 4, 2, 121, 120, 15.6);
 
 --
 -- Acionadores `produtos`
@@ -236,11 +255,35 @@ DROP TABLE IF EXISTS `sub_categorias`;
 CREATE TABLE IF NOT EXISTS `sub_categorias` (
   `cod_subcategoria` int(11) NOT NULL AUTO_INCREMENT,
   `cod_categoria` int(11) NOT NULL,
-  `nome` varchar(50) NOT NULL,
+  `nome_subcategoria` varchar(50) NOT NULL,
   `iva` float NOT NULL DEFAULT '0.13',
   PRIMARY KEY (`cod_subcategoria`),
   KEY `cod_categoria` (`cod_categoria`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `sub_categorias`
+--
+
+INSERT INTO `sub_categorias` (`cod_subcategoria`, `cod_categoria`, `nome_subcategoria`, `iva`) VALUES
+(1, 1, 'Guitarras Elétricas', 0.13),
+(2, 4, 'Baixos Elétricos', 0.13),
+(4, 3, 'Baterias Elétricas', 0.13),
+(5, 5, 'Teclados', 0.13),
+(6, 5, 'Sintetizadores', 0.13),
+(7, 5, 'Teclados controladores MIDI', 0.13),
+(8, 5, 'Pianos verticais', 0.13),
+(9, 5, 'Pianos de cauda', 0.13),
+(10, 5, 'Amplificadores para teclados', 0.23),
+(11, 1, 'Cordas', 0.23),
+(12, 1, 'Guitarras Clássicas', 0.13),
+(13, 1, 'Guitarras Acústicas', 0.13),
+(14, 1, 'Amplificadores Guitarra Elétrica', 0.23),
+(15, 4, 'Baixos Acústicos/Semi-Acústicos', 0.13),
+(16, 4, 'Cordas', 0.23),
+(17, 4, 'Pedais Baixo', 0.23),
+(18, 3, 'Baterias Acústicas', 0.13),
+(19, 3, 'Baquetas', 0.23);
 
 --
 -- Restrições para despejos de tabelas
