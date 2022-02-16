@@ -56,7 +56,7 @@ public class clients extends javax.swing.JFrame {
             rs = ps.executeQuery();
             Client client;
             while(rs.next()){
-                client = new Client(rs.getInt("cod_cliente"), rs.getString("nome_cliente"), rs.getString("morada"), rs.getString("cod_postal"), rs.getString("localidade"), rs.getString("cidade"), rs.getInt("num_tel"));
+                client = new Client(rs.getInt("cod_cliente"), rs.getString("nome_cliente"), rs.getString("morada"), rs.getString("cod_postal"), rs.getString("localidade"), rs.getString("cidade"), rs.getInt("num_tel"), rs.getInt("contribuinte"));
                 clientsList.add(client);
             }
         }catch(SQLException ex){
@@ -67,7 +67,7 @@ public class clients extends javax.swing.JFrame {
     public void show_client(){
         ArrayList<Client> list = clientList();
         DefaultTableModel model = (DefaultTableModel)tableClients.getModel();
-        Object[] row = new Object[7];
+        Object[] row = new Object[8];
         for(int i=0; i<list.size();i++){
             row[0]=list.get(i).getId();
             row[1]=list.get(i).getNome_client();
@@ -76,6 +76,7 @@ public class clients extends javax.swing.JFrame {
             row[4]=list.get(i).getLocalidade();
             row[5]=list.get(i).getCidade();
             row[6]=list.get(i).getNum_tel();
+            row[7]=list.get(i).getContribuinte();
            
             model.addRow(row);
         }
@@ -146,7 +147,7 @@ public class clients extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Nome", "Morada", "Cod. Postal", "Localidade", "Cidade", "Nº de Tel."
+                "ID", "Nome", "Morada", "Cod. Postal", "Localidade", "Cidade", "Nº de Tel.", "Contribuinte"
             }
         ));
         tableClients.addMouseListener(new java.awt.event.MouseAdapter() {

@@ -6,6 +6,8 @@
 package magnumopusms;
 
 import java.sql.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import static magnumopusms.mainform.idUser;
@@ -57,9 +59,11 @@ public class utilizador extends javax.swing.JFrame {
         labelUsername = new javax.swing.JLabel();
         fieldUsername = new javax.swing.JTextField();
         labelPassword = new javax.swing.JLabel();
-        fieldPassword = new javax.swing.JTextField();
         labelNomeFunc = new javax.swing.JLabel();
         buttonUpdate = new javax.swing.JButton();
+        labelPassword1 = new javax.swing.JLabel();
+        fieldPassword = new javax.swing.JPasswordField();
+        fieldPassword1 = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -113,13 +117,6 @@ public class utilizador extends javax.swing.JFrame {
         labelPassword.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         labelPassword.setText("Password");
 
-        fieldPassword.setFont(new java.awt.Font("Century Gothic", 1, 11)); // NOI18N
-        fieldPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldPasswordActionPerformed(evt);
-            }
-        });
-
         labelNomeFunc.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         labelNomeFunc.setText("Nome");
 
@@ -131,6 +128,9 @@ public class utilizador extends javax.swing.JFrame {
                 buttonUpdateActionPerformed(evt);
             }
         });
+
+        labelPassword1.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        labelPassword1.setText("Confirmar Password");
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -145,26 +145,35 @@ public class utilizador extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(labelArea))
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(45, 45, 45)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelNomeFunc, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(fieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fieldUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fieldNomeFunc, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(buttonUpdate))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addGap(45, 45, 45)
+                                .addComponent(labelPassword1))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelUsername, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(fieldUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+                            .addComponent(buttonUpdate)
+                            .addComponent(fieldPassword)
+                            .addComponent(fieldPassword1)))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(129, 129, 129)
+                        .addComponent(labelNomeFunc, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(fieldNomeFunc, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(271, 271, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelNomeFunc, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fieldNomeFunc, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(fieldNomeFunc, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelNomeFunc, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fieldUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -173,9 +182,15 @@ public class utilizador extends javax.swing.JFrame {
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(labelPassword1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addComponent(fieldPassword1)
+                        .addGap(1, 1, 1)))
                 .addGap(18, 18, 18)
                 .addComponent(buttonUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(21, 21, 21)
+                .addGap(40, 40, 40)
                 .addComponent(labelArea, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonBack)
@@ -187,9 +202,9 @@ public class utilizador extends javax.swing.JFrame {
         backgroundPanelLayout.setHorizontalGroup(
             backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(backgroundPanelLayout.createSequentialGroup()
-                .addGap(176, 176, 176)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(labelMOpus)
-                .addGap(87, 87, 87)
+                .addGap(174, 174, 174)
                 .addComponent(buttonExit)
                 .addContainerGap())
             .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -210,7 +225,7 @@ public class utilizador extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(backgroundPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(backgroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,14 +271,25 @@ public class utilizador extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_fieldNomeFuncActionPerformed
 
-    private void fieldPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldPasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldPasswordActionPerformed
-
     private void buttonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUpdateActionPerformed
+        String pass = String.valueOf(fieldPassword.getPassword());
+        String conpass = String.valueOf(fieldPassword1.getPassword());
+        final String regex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
+        final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+        final Matcher matcher = pattern.matcher(pass);
+
+        
+        if (conpass.equals(pass) && matcher.find()){
         String query = "UPDATE `login` SET `nome_func`= '"+fieldNomeFunc.getText()+"',`username`='"+fieldUsername.getText()+"',`password`='"+fieldPassword.getText()+"' WHERE id = '"+idUser+"'";
         
         executeSQLQuery(query, "atualizados");
+        } else {
+            if (!conpass.equals(pass)){
+            JOptionPane.showMessageDialog(null, "A password inserida não está igual nos dois campos!", "Erro: confirmação de password!", 2);
+        } else {
+                if (!(matcher.find())){
+                    JOptionPane.showMessageDialog(null, "A password inserida não cumpre os critérios! \n\n A password deve conter, pelo menos: \n * 8 caracteres \n * 1 número \n * 1 letra maiúscula \n * 1 caracter especial", "Erro: critérios de password", 2);
+                }}}
     }//GEN-LAST:event_buttonUpdateActionPerformed
 
     /**
@@ -285,12 +311,14 @@ public class utilizador extends javax.swing.JFrame {
     private javax.swing.JButton buttonExit;
     private javax.swing.JButton buttonUpdate;
     public static javax.swing.JTextField fieldNomeFunc;
-    public static javax.swing.JTextField fieldPassword;
+    public javax.swing.JPasswordField fieldPassword;
+    private javax.swing.JPasswordField fieldPassword1;
     public static javax.swing.JTextField fieldUsername;
     private javax.swing.JLabel labelArea;
     private javax.swing.JLabel labelMOpus;
     private javax.swing.JLabel labelNomeFunc;
     private javax.swing.JLabel labelPassword;
+    private javax.swing.JLabel labelPassword1;
     private javax.swing.JLabel labelUsername;
     private javax.swing.JPanel mainPanel;
     // End of variables declaration//GEN-END:variables

@@ -10,9 +10,9 @@ package magnumopusms;
  * @author A100519
  */
 public class Client {
-    private int id, num_tel;
+    private int id, num_tel, contribuinte;
     private String nome_client, morada, cod_postal, localidade, cidade;
-    public Client(int id, String nome_client, String morada, String cod_postal, String localidade, String cidade, int num_tel){
+    public Client(int id, String nome_client, String morada, String cod_postal, String localidade, String cidade, int num_tel, int contribuinte){
         this.id = id;
         this.nome_client = nome_client;
         this.morada = morada;
@@ -20,6 +20,7 @@ public class Client {
         this.localidade = localidade;
         this.cidade = cidade;
         this.num_tel = num_tel;
+        this.contribuinte = contribuinte;
     }
     
     public int getId(){
@@ -42,5 +43,8 @@ public class Client {
     }
     public int getNum_tel(){
         return num_tel;
+    }
+    public int getContribuinte(){
+        return contribuinte;
     }
 }

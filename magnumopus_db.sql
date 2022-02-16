@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 03-Fev-2022 às 21:39
+-- Tempo de geração: 16-Fev-2022 às 20:02
 -- Versão do servidor: 5.7.31
 -- versão do PHP: 7.3.21
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `magnumopus_db`
 --
+CREATE DATABASE IF NOT EXISTS `magnumopus_db` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `magnumopus_db`;
 
 -- --------------------------------------------------------
 
@@ -61,14 +63,15 @@ CREATE TABLE IF NOT EXISTS `clientes` (
   `cidade` text NOT NULL,
   `num_tel` int(9) NOT NULL,
   PRIMARY KEY (`cod_cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `clientes`
 --
 
 INSERT INTO `clientes` (`cod_cliente`, `nome_cliente`, `morada`, `cod_postal`, `localidade`, `cidade`, `num_tel`) VALUES
-(3, 'Nuno Moura', 'Rua 1 , 123', '1234-567', 'Localidade', 'Cidade', 912345678);
+(3, 'Nuno Moura', 'Rua 1 , 123', '1234-567', 'Localidade', 'Cidade', 912345678),
+(5, 'Marta Pereira', 'Rua 2, 456', '1234-890', 'Localidade', 'Cidade', 937778899);
 
 -- --------------------------------------------------------
 
@@ -80,22 +83,12 @@ DROP TABLE IF EXISTS `encomendas`;
 CREATE TABLE IF NOT EXISTS `encomendas` (
   `cod_encomenda` int(11) NOT NULL AUTO_INCREMENT,
   `cod_cliente` int(11) NOT NULL,
-  `preco_total` float UNSIGNED NOT NULL DEFAULT '0',
+  `preco_total` decimal(10,0) UNSIGNED NOT NULL DEFAULT '0',
   `data` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `estado` varchar(25) DEFAULT 'Em Processamento',
+  `estado` varchar(25) DEFAULT 'Em processamento',
   PRIMARY KEY (`cod_encomenda`),
   KEY `cod_cliente` (`cod_cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `encomendas`
---
-
-INSERT INTO `encomendas` (`cod_encomenda`, `cod_cliente`, `preco_total`, `data`, `estado`) VALUES
-(1, 3, 0, '2022-02-03 18:55:38', 'Cancelada'),
-(2, 3, 17085.6, '2022-02-03 19:54:31', 'Cancelada'),
-(3, 3, 271.2, '2022-02-03 20:04:05', 'Criada'),
-(4, 3, 406.8, '2022-02-03 21:02:42', 'Em Processamento');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -109,20 +102,11 @@ CREATE TABLE IF NOT EXISTS `encomendas_produtos` (
   `cod_encomenda` int(11) NOT NULL,
   `cod_produto` int(11) NOT NULL,
   `quant` int(11) UNSIGNED NOT NULL,
-  `preco_prods` float UNSIGNED DEFAULT '0',
+  `preco_prods` decimal(10,0) UNSIGNED DEFAULT '0',
   PRIMARY KEY (`cod_encprod`),
   KEY `cod_encomenda` (`cod_encomenda`),
   KEY `cod_produto` (`cod_produto`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `encomendas_produtos`
---
-
-INSERT INTO `encomendas_produtos` (`cod_encprod`, `cod_encomenda`, `cod_produto`, `quant`, `preco_prods`) VALUES
-(1, 2, 1, 126, 17085.6),
-(2, 3, 1, 2, 271.2),
-(3, 4, 1, 3, 406.8);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Acionadores `encomendas_produtos`
@@ -206,20 +190,22 @@ CREATE TABLE IF NOT EXISTS `produtos` (
   `cod_categoria` int(11) NOT NULL,
   `cod_subcategoria` int(11) NOT NULL,
   `quant_disp` int(11) UNSIGNED NOT NULL,
-  `preco` float DEFAULT NULL,
-  `valor_iva` float DEFAULT NULL,
-  `preco_civa` float GENERATED ALWAYS AS ((`preco` + `valor_iva`)) VIRTUAL,
+  `preco` decimal(10,0) DEFAULT NULL,
+  `valor_iva` decimal(10,0) DEFAULT NULL,
+  `preco_civa` decimal(10,0) GENERATED ALWAYS AS ((`preco` + `valor_iva`)) VIRTUAL,
   PRIMARY KEY (`cod_produto`),
   KEY `cod_categoria` (`cod_categoria`),
   KEY `cod_subcategoria` (`cod_subcategoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `produtos`
 --
 
 INSERT INTO `produtos` (`cod_produto`, `nome_produto`, `cod_categoria`, `cod_subcategoria`, `quant_disp`, `preco`, `valor_iva`) VALUES
-(1, 'AAAAA', 4, 2, 121, 120, 15.6);
+(1, 'Harley Benton PB-50 SB Vintage Series ', 4, 2, 116, '98', '13'),
+(3, 'Harley Benton TE-20HH SBK Standard Series ', 1, 1, 85, '79', '10'),
+(4, 'Guild A-20 Bob Marley ', 1, 13, 159, '300', '39');
 
 --
 -- Acionadores `produtos`

@@ -199,7 +199,7 @@ public class orders extends javax.swing.JFrame {
         });
 
         estadoComboBox.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        estadoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Criada", "Em Processamento", "Pronta para Levantamento", "Levantada em Loja", "Enviada", "Entregue", "Cancelada", "Venda Em Loja" }));
+        estadoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Em Processamento", "Pronta para Levantamento", "Levantada em Loja", "Enviada", "Entregue", "Cancelada", "Venda Em Loja" }));
         estadoComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 estadoComboBoxActionPerformed(evt);
@@ -425,7 +425,8 @@ public class orders extends javax.swing.JFrame {
     }//GEN-LAST:event_estadoComboBoxActionPerformed
 
     private void buttonUpdateProdsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUpdateProdsActionPerformed
-        DefaultTableModel model = (DefaultTableModel) tableOrders.getModel();
+        JOptionPane.showMessageDialog(null, "Esta funcionalidade encontra-se em desenvolvimento! \n Volte mais tarde.", "Em desenvolvimento", 1);
+        /* DefaultTableModel model = (DefaultTableModel) tableOrders.getModel();
         int i = tableOrders.getSelectedRow();
         String estado = model.getValueAt(i, 4).toString();
         if (estado.equals("Criada")){
@@ -436,7 +437,7 @@ public class orders extends javax.swing.JFrame {
             this.dispose();
         }else{
             JOptionPane.showMessageDialog(null, "Apenas é possível a alteração de produtos de encomendas com o estado 'Criada'! \n\n Estado da encomenda: "+estado , "Erro!" , 2);
-        }
+        }*/
     }//GEN-LAST:event_buttonUpdateProdsActionPerformed
 
     /**

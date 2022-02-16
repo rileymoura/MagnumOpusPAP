@@ -70,7 +70,7 @@ public class ordersAdd extends javax.swing.JFrame {
             rs = ps.executeQuery();
             Client client;
             while(rs.next()){
-                client = new Client(rs.getInt("cod_cliente"), rs.getString("nome_cliente"), rs.getString("morada"), rs.getString("cod_postal"), rs.getString("localidade"), rs.getString("cidade"), rs.getInt("num_tel"));
+                client = new Client(rs.getInt("cod_cliente"), rs.getString("nome_cliente"), rs.getString("morada"), rs.getString("cod_postal"), rs.getString("localidade"), rs.getString("cidade"), rs.getInt("num_tel"), rs.getInt("contribuinte"));
                 clientsList.add(client);
             }
         }catch(SQLException ex){
@@ -535,7 +535,7 @@ public class ordersAdd extends javax.swing.JFrame {
         TableModel model = tableProducts.getModel();
         DefaultTableModel model2 = (DefaultTableModel)tableProductsS.getModel();   
         int quantidade = (int) jSpinnerQuantidade.getValue();
-                    if (quantidade < 0){
+                    if (quantidade > 0){
                         float preco = (float) model.getValueAt(i, 7);
                         Object[] row = new Object[4];
                         row[0] = model.getValueAt(i, 0).toString();
