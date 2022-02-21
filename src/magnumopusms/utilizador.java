@@ -5,6 +5,8 @@
  */
 package magnumopusms;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -274,13 +276,23 @@ public class utilizador extends javax.swing.JFrame {
     private void buttonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUpdateActionPerformed
         String pass = String.valueOf(fieldPassword.getPassword());
         String conpass = String.valueOf(fieldPassword1.getPassword());
-        final String regex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
+        final String regex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$";
         final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
         final Matcher matcher = pattern.matcher(pass);
 
-        
+        try{
         if (conpass.equals(pass) && matcher.find()){
-        String query = "UPDATE `login` SET `nome_func`= '"+fieldNomeFunc.getText()+"',`username`='"+fieldUsername.getText()+"',`password`='"+fieldPassword.getText()+"' WHERE id = '"+idUser+"'";
+        String encryptedpass = "";
+        MessageDigest m = MessageDigest.getInstance("MD5");
+        m.update(pass.getBytes());
+        byte[] bytes = m.digest();
+         StringBuilder s = new StringBuilder();  
+            for(int i=0; i< bytes.length ;i++)  
+            {  
+                s.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));  
+            }   
+            encryptedpass = s.toString();
+        String query = "UPDATE `login` SET `nome_func`= '"+fieldNomeFunc.getText()+"',`username`='"+fieldUsername.getText()+"',`password`='"+encryptedpass+"' WHERE id = '"+idUser+"'";
         
         executeSQLQuery(query, "atualizados");
         } else {
@@ -290,6 +302,9 @@ public class utilizador extends javax.swing.JFrame {
                 if (!(matcher.find())){
                     JOptionPane.showMessageDialog(null, "A password inserida não cumpre os critérios! \n\n A password deve conter, pelo menos: \n * 8 caracteres \n * 1 número \n * 1 letra maiúscula \n * 1 caracter especial", "Erro: critérios de password", 2);
                 }}}
+        }catch(NoSuchAlgorithmException e){
+                e.printStackTrace();  
+        }
     }//GEN-LAST:event_buttonUpdateActionPerformed
 
     /**

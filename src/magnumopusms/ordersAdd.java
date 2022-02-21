@@ -630,7 +630,17 @@ public class ordersAdd extends javax.swing.JFrame {
                         executeSQLQuery(query, "Produtos inseridos");
                         query = "UPDATE produtos SET quant_disp = "+quant_final+" WHERE cod_produto = '"+model.getValueAt(i, 0)+"'";
                         executeSQLQuery(query, "Inventário atualizado");
-                        orders orders = new orders();
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Não existe quantidade suficiente do produto: "+model.getValueAt(i,1)+" \n\n Quantidade Disponível: "+quant_disp);
+                        query = "DELETE FROM encomendas_produtos WHERE cod_encomenda = '"+fieldIdOrder.getText()+"'";
+                        executeSQLQuery(query, "Produtos revertidos");
+                        query = "DELETE FROM encomendas WHERE cod_encomenda = '"+fieldIdOrder.getText()+"'";
+                        executeSQLQuery(query, "Encomenda cancelada");
+                        break;
+                    }
+                }
+            }
+            orders orders = new orders();
                         orders.setVisible(true);
                         orders.pack();
                         orders.setLocationRelativeTo(null);
@@ -641,11 +651,6 @@ public class ordersAdd extends javax.swing.JFrame {
                         }
                         orders.show_orders();
                         this.dispose();
-                    }else{
-                        JOptionPane.showMessageDialog(null, "Não existe quantidade suficiente do produto: "+model.getValueAt(i,1)+" \n\n Quantidade Disponível: "+quant_disp);
-                    }
-                }
-            }
         }catch(SQLException ex){
             Logger.getLogger(ordersAdd.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, ex);

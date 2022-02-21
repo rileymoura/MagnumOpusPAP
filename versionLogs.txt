@@ -1,0 +1,24 @@
+V1.1 [21/02/22]- MELHORIAS PÓS APRESENTAÇÃO, COM BASE NAS OPINIÕES DO JURI
+	 	     ASSIM COMO REVISÃO PESSOAL DO PROJETO.
+
+- Correção de bugs
+	- Adicionar Encomendas: ao adicionar um produto com quantidade 
+	maior à suficiente, não finaliza a encomenda, cancelando-a e eliminando 
+	os dados relacionados.
+
+- Intuitividade
+	- Remoção da mensagem inicial de "Login Com Sucesso"
+	com o intuito de tornar a execução mais rápida.
+
+- Segurança
+	Geral:
+	- Encriptação de passwords;
+	- Alteração de critérios: Passwords agora requerem
+	12 caracteres invés de 8 caracteres.
+	
+	Funcionários:
+	- Passwords não são mais visiveis na gestão de 
+	autenticações de funcionários, tanto na tabela como
+	nos campos de texto;
+	- Necessária confirmação de password ao inserir ou atualizar
+	funcionários.

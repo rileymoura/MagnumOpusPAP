@@ -11,7 +11,11 @@ package magnumopusms;
  */
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import  java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 public class login extends javax.swing.JFrame{
 
@@ -194,21 +198,30 @@ public class login extends javax.swing.JFrame{
         ResultSet rs;
         String user = fieldUsername.getText();
         String pass = String.valueOf(fieldPassword.getPassword());
-        
-        String query = "SELECT * FROM login  WHERE username = ? AND password = ?";
+        try{
+        String encryptedpass;
+        MessageDigest m = MessageDigest.getInstance("MD5");
+        m.update(pass.getBytes());
+        byte[] bytes = m.digest();
+         StringBuilder s = new StringBuilder();  
+            for(int i=0; i< bytes.length ;i++)  
+            {  
+                s.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));  
+            }   
+            encryptedpass = s.toString();
+            
+            String query = "SELECT * FROM login  WHERE username = ? AND password = ?";
         
         try {
             ps = dbConnection.getConnection().prepareStatement(query);
             
             ps.setString(1, user);
-            ps.setString(2, pass);
+            ps.setString(2, encryptedpass);
             
             rs = ps.executeQuery();
             
             if(rs.next())
             {
-                    
-                    JOptionPane.showMessageDialog(null, "Login Com Sucesso");
                     mainform mainform = new mainform();
                     mainform.setVisible(true);
                     mainform.pack();
@@ -225,6 +238,10 @@ public class login extends javax.swing.JFrame{
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
+        }catch (NoSuchAlgorithmException e){
+        e.printStackTrace();
+        }
+        
     }//GEN-LAST:event_buttonLoginActionPerformed
 
     private void buttonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonClearActionPerformed
@@ -237,81 +254,11 @@ public class login extends javax.swing.JFrame{
     }//GEN-LAST:event_buttonExitActionPerformed
 
     private void buttonLoginKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buttonLoginKeyPressed
-        if (evt.getKeyCode()==KeyEvent.VK_ENTER){
-            PreparedStatement ps;
-        ResultSet rs;
-        String user = fieldUsername.getText();
-        String pass = String.valueOf(fieldPassword.getPassword());
-        
-        String query = "SELECT * FROM login  WHERE username = ? AND password = ?";
-        
-        try {
-            ps = dbConnection.getConnection().prepareStatement(query);
-            
-            ps.setString(1, user);
-            ps.setString(2, pass);
-            
-            rs = ps.executeQuery();
-            
-            if(rs.next())
-            {
-                    
-                    JOptionPane.showMessageDialog(null, "Login Com Sucesso");
-                    mainform mainform = new mainform();
-                    mainform.setVisible(true);
-                    mainform.pack();
-                    mainform.setLocationRelativeTo(null);
-                    mainform.welcomeLabel.setText("Bem-vindo, " +rs.getString("nome_func"));
-                    mainform.idUser = (rs.getInt("id"));
-                    this.dispose();
-                    
-            }
-            else{
-                    JOptionPane.showMessageDialog(null, "Username ou Password Incorretos!", "Login Falhou", 2);
-                }
-            
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex);
-        }
-    }
+
     }//GEN-LAST:event_buttonLoginKeyPressed
 
     private void fieldPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldPasswordKeyPressed
-        if (evt.getKeyCode()==KeyEvent.VK_ENTER){
-            PreparedStatement ps;
-            ResultSet rs;
-            String user = fieldUsername.getText();
-            String pass = String.valueOf(fieldPassword.getPassword());
         
-            String query = "SELECT * FROM login  WHERE username = ? AND password = ?";
-        
-            try {
-               ps = dbConnection.getConnection().prepareStatement(query);
-            
-               ps.setString(1, user);
-               ps.setString(2, pass);
-            
-               rs = ps.executeQuery();
-            
-               if(rs.next())
-               {    
-                JOptionPane.showMessageDialog(null, "Login Com Sucesso");
-                mainform mainform = new mainform();
-                mainform.setVisible(true);
-                mainform.pack();
-                mainform.setLocationRelativeTo(null);
-                mainform.welcomeLabel.setText("Bem-vindo, " +rs.getString("nome_func"));
-                mainform.idUser = (rs.getInt("id"));
-                this.dispose();
-                    
-                }
-                else{
-                    JOptionPane.showMessageDialog(null, "Username ou Password Incorretos!", "Login Falhou", 2);
-                }
-            
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex);
-        }}
     }//GEN-LAST:event_fieldPasswordKeyPressed
 
     /**

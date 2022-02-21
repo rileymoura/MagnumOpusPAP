@@ -9,6 +9,8 @@ package magnumopusms;
  *
  * @author A100519
  */
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -104,13 +106,15 @@ Connection con = null;
         labelUsername = new javax.swing.JLabel();
         fieldUsername = new javax.swing.JTextField();
         labelPassword = new javax.swing.JLabel();
-        fieldPassword = new javax.swing.JTextField();
         labelNome = new javax.swing.JLabel();
         buttonUpdate = new javax.swing.JButton();
         buttonDelete = new javax.swing.JButton();
         fieldNomeFunc = new javax.swing.JTextField();
         labelID = new javax.swing.JLabel();
         fieldProcurar = new javax.swing.JTextField();
+        fieldPassword = new javax.swing.JPasswordField();
+        labelPassword1 = new javax.swing.JLabel();
+        fieldPassword1 = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -155,7 +159,7 @@ Connection con = null;
 
             },
             new String [] {
-                "ID", "Nome", "Username", "Password"
+                "ID", "Nome", "Username"
             }
         ));
         tableFuncs.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -183,13 +187,6 @@ Connection con = null;
 
         labelPassword.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         labelPassword.setText("Password");
-
-        fieldPassword.setFont(new java.awt.Font("Century Gothic", 1, 11)); // NOI18N
-        fieldPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldPasswordActionPerformed(evt);
-            }
-        });
 
         labelNome.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         labelNome.setText("Nome");
@@ -225,6 +222,9 @@ Connection con = null;
             }
         });
 
+        labelPassword1.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        labelPassword1.setText("Confirmar Password");
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -235,15 +235,16 @@ Connection con = null;
                         .addContainerGap()
                         .addComponent(buttonBack))
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(labelMOpus1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(fieldProcurar, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addGap(45, 45, 45)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(mainPanelLayout.createSequentialGroup()
+                                    .addContainerGap()
+                                    .addComponent(labelMOpus1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(fieldProcurar, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(mainPanelLayout.createSequentialGroup()
+                                    .addGap(45, 45, 45)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(mainPanelLayout.createSequentialGroup()
                                 .addGap(110, 110, 110)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -254,9 +255,14 @@ Connection con = null;
                                 .addGap(18, 18, 18)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(fieldNomeFunc, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(fieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(fieldUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(fieldId, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(fieldId, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(fieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addComponent(labelPassword1)
+                                .addGap(18, 18, 18)
+                                .addComponent(fieldPassword1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(36, 36, 36)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(buttonUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -282,10 +288,16 @@ Connection con = null;
                             .addComponent(labelUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(fieldUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(labelPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(fieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(1, 1, 1)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelPassword1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fieldPassword1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -374,11 +386,23 @@ Connection con = null;
     }//GEN-LAST:event_buttonBackActionPerformed
 
     private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddActionPerformed
-         String pass = fieldPassword.getText();
+        String pass = String.valueOf(fieldPassword.getPassword());
+        String conpass = String.valueOf(fieldPassword1.getPassword());
         final String regex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
         final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
         final Matcher matcher = pattern.matcher(pass);
-        if (matcher.find()){
+        try{
+        String encryptedpass = "";
+        MessageDigest m = MessageDigest.getInstance("MD5");
+        m.update(pass.getBytes());
+        byte[] bytes = m.digest();
+         StringBuilder s = new StringBuilder();  
+            for(int x=0; x< bytes.length ;x++)  
+            {  
+                s.append(Integer.toString((bytes[x] & 0xff) + 0x100, 16).substring(1));  
+            }   
+            encryptedpass = s.toString();
+        if (conpass.equals(pass) && matcher.find()){
         String query = "INSERT INTO login (nome_func, username, password) VALUES ('"+fieldNomeFunc.getText()+"','"+fieldUsername.getText()+"','"+fieldPassword.getText()+"')";
         
         executeSQLQuery(query, "inseridos");
@@ -389,9 +413,14 @@ Connection con = null;
         }
         show_func();
         } else {
+            if (!conpass.equals(pass)){
+            JOptionPane.showMessageDialog(null, "A password inserida não está igual nos dois campos!", "Erro: confirmação de password!", 2);
+        } else {
             if (!(matcher.find())){
                     JOptionPane.showMessageDialog(null, "A password inserida não cumpre os critérios! \n\n A password deve conter, pelo menos: \n * 8 caracteres \n * 1 número \n * 1 letra maiúscula \n * 1 caracter especial", "Erro: critérios de password", 2);
-            }}
+            }}}}catch(NoSuchAlgorithmException e){
+                e.printStackTrace();
+            }
         
     }//GEN-LAST:event_buttonAddActionPerformed
 
@@ -399,12 +428,24 @@ Connection con = null;
          int i = tableFuncs.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) tableFuncs.getModel();
         String id = model.getValueAt(i,0).toString();
-        String pass = fieldPassword.getText();
-        final String regex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
+        String pass = String.valueOf(fieldPassword.getPassword());
+        String conpass = String.valueOf(fieldPassword1.getPassword());
+        final String regex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$";
         final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
         final Matcher matcher = pattern.matcher(pass);
-        if (matcher.find()){
-        String query = "UPDATE `login` SET `nome_func`= '"+fieldNomeFunc.getText()+"',`username`='"+fieldUsername.getText()+"',`password`='"+fieldPassword.getText()+"' WHERE id = '"+id+"'";
+        try{
+        String encryptedpass = "";
+        MessageDigest m = MessageDigest.getInstance("MD5");
+        m.update(pass.getBytes());
+        byte[] bytes = m.digest();
+         StringBuilder s = new StringBuilder();  
+            for(int x=0; x< bytes.length ;x++)  
+            {  
+                s.append(Integer.toString((bytes[x] & 0xff) + 0x100, 16).substring(1));  
+            }   
+            encryptedpass = s.toString();
+        if (conpass.equals(pass) && matcher.find()){
+        String query = "UPDATE `login` SET `nome_func`= '"+fieldNomeFunc.getText()+"',`username`='"+fieldUsername.getText()+"',`password`='"+encryptedpass+"' WHERE id = '"+id+"'";
         
         executeSQLQuery(query, "atualizados");
         int rowCount = model.getRowCount();
@@ -412,10 +453,15 @@ Connection con = null;
             model.removeRow(i);
         }
         show_func();
+        } else {
+            if (!conpass.equals(pass)){
+            JOptionPane.showMessageDialog(null, "A password inserida não está igual nos dois campos!", "Erro: confirmação de password!", 2);
         } else{
             if (!(matcher.find())){
                     JOptionPane.showMessageDialog(null, "A password inserida não cumpre os critérios! \n\n A password deve conter, pelo menos: \n * 8 caracteres \n * 1 número \n * 1 letra maiúscula \n * 1 caracter especial", "Erro: critérios de password", 2);
-                }}
+                }}}}catch(NoSuchAlgorithmException e){
+                    e.printStackTrace();
+                }
     }//GEN-LAST:event_buttonUpdateActionPerformed
 
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
@@ -443,7 +489,6 @@ Connection con = null;
         fieldId.setText(model.getValueAt(i,0).toString());
         fieldNomeFunc.setText(model.getValueAt(i,1).toString());
         fieldUsername.setText(model.getValueAt(i,2).toString());
-        fieldPassword.setText(model.getValueAt(i,3).toString());
 
     }//GEN-LAST:event_tableFuncsMouseClicked
 
@@ -455,10 +500,6 @@ Connection con = null;
         String searchString = fieldProcurar.getText();
         search(searchString);
     }//GEN-LAST:event_fieldProcurarKeyReleased
-
-    private void fieldPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldPasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldPasswordActionPerformed
 
     /**
      * @param args the command line arguments
@@ -503,7 +544,8 @@ Connection con = null;
     private javax.swing.JButton buttonUpdate;
     private javax.swing.JTextField fieldId;
     private javax.swing.JTextField fieldNomeFunc;
-    private javax.swing.JTextField fieldPassword;
+    private javax.swing.JPasswordField fieldPassword;
+    private javax.swing.JPasswordField fieldPassword1;
     private javax.swing.JTextField fieldProcurar;
     private static javax.swing.JTextField fieldUsername;
     private javax.swing.JScrollPane jScrollPane1;
@@ -512,6 +554,7 @@ Connection con = null;
     private javax.swing.JLabel labelMOpus1;
     private javax.swing.JLabel labelNome;
     private javax.swing.JLabel labelPassword;
+    private javax.swing.JLabel labelPassword1;
     private javax.swing.JLabel labelUsername;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JTable tableFuncs;

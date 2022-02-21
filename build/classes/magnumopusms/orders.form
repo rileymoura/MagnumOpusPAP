@@ -348,15 +348,14 @@
                   <Font name="Century Gothic" size="14" style="1"/>
                 </Property>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="8">
-                    <StringItem index="0" value="Criada"/>
-                    <StringItem index="1" value="Em Processamento"/>
-                    <StringItem index="2" value="Pronta para Levantamento"/>
-                    <StringItem index="3" value="Levantada em Loja"/>
-                    <StringItem index="4" value="Enviada"/>
-                    <StringItem index="5" value="Entregue"/>
-                    <StringItem index="6" value="Cancelada"/>
-                    <StringItem index="7" value="Venda Em Loja"/>
+                  <StringArray count="7">
+                    <StringItem index="0" value="Em Processamento"/>
+                    <StringItem index="1" value="Pronta para Levantamento"/>
+                    <StringItem index="2" value="Levantada em Loja"/>
+                    <StringItem index="3" value="Enviada"/>
+                    <StringItem index="4" value="Entregue"/>
+                    <StringItem index="5" value="Cancelada"/>
+                    <StringItem index="6" value="Venda Em Loja"/>
                   </StringArray>
                 </Property>
               </Properties>

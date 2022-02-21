@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 16-Fev-2022 às 20:02
+-- Tempo de geração: 21-Fev-2022 às 20:15
 -- Versão do servidor: 5.7.31
 -- versão do PHP: 7.3.21
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `magnumopus_db`
 --
-CREATE DATABASE IF NOT EXISTS `magnumopus_db` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `magnumopus_db`;
 
 -- --------------------------------------------------------
 
@@ -62,6 +60,7 @@ CREATE TABLE IF NOT EXISTS `clientes` (
   `localidade` varchar(50) NOT NULL,
   `cidade` text NOT NULL,
   `num_tel` int(9) NOT NULL,
+  `contribuinte` int(9) NOT NULL,
   PRIMARY KEY (`cod_cliente`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
@@ -69,9 +68,9 @@ CREATE TABLE IF NOT EXISTS `clientes` (
 -- Extraindo dados da tabela `clientes`
 --
 
-INSERT INTO `clientes` (`cod_cliente`, `nome_cliente`, `morada`, `cod_postal`, `localidade`, `cidade`, `num_tel`) VALUES
-(3, 'Nuno Moura', 'Rua 1 , 123', '1234-567', 'Localidade', 'Cidade', 912345678),
-(5, 'Marta Pereira', 'Rua 2, 456', '1234-890', 'Localidade', 'Cidade', 937778899);
+INSERT INTO `clientes` (`cod_cliente`, `nome_cliente`, `morada`, `cod_postal`, `localidade`, `cidade`, `num_tel`, `contribuinte`) VALUES
+(3, 'Nuno Moura', 'Rua 1 , 123', '1234-567', 'Localidade', 'Cidade', 912345678, 123456789),
+(5, 'Marta Pereira', 'Rua 2, 456', '1234-890', 'Localidade', 'Cidade', 937778899, 987654312);
 
 -- --------------------------------------------------------
 
@@ -88,7 +87,19 @@ CREATE TABLE IF NOT EXISTS `encomendas` (
   `estado` varchar(25) DEFAULT 'Em processamento',
   PRIMARY KEY (`cod_encomenda`),
   KEY `cod_cliente` (`cod_cliente`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `encomendas`
+--
+
+INSERT INTO `encomendas` (`cod_encomenda`, `cod_cliente`, `preco_total`, `data`, `estado`) VALUES
+(1, 5, '200', '2022-02-16 20:21:35', 'Em processamento'),
+(2, 3, '111', '2022-02-17 20:18:44', 'Em processamento'),
+(3, 3, '200', '2022-02-17 20:18:59', 'Em Processamento'),
+(4, 3, '111', '2022-02-21 19:54:22', 'Em processamento'),
+(5, 5, '111', '2022-02-21 19:56:01', 'Em processamento'),
+(6, 5, '111', '2022-02-21 19:58:24', 'Em processamento');
 
 -- --------------------------------------------------------
 
@@ -106,7 +117,21 @@ CREATE TABLE IF NOT EXISTS `encomendas_produtos` (
   PRIMARY KEY (`cod_encprod`),
   KEY `cod_encomenda` (`cod_encomenda`),
   KEY `cod_produto` (`cod_produto`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `encomendas_produtos`
+--
+
+INSERT INTO `encomendas_produtos` (`cod_encprod`, `cod_encomenda`, `cod_produto`, `quant`, `preco_prods`) VALUES
+(1, 1, 1, 1, '111'),
+(2, 1, 3, 1, '89'),
+(3, 2, 1, 1, '111'),
+(4, 3, 1, 1, '111'),
+(5, 3, 3, 1, '89'),
+(6, 4, 1, 1, '111'),
+(7, 5, 1, 1, '111'),
+(8, 6, 1, 1, '111');
 
 --
 -- Acionadores `encomendas_produtos`
@@ -167,15 +192,16 @@ CREATE TABLE IF NOT EXISTS `login` (
   `tipo_user` varchar(10) NOT NULL DEFAULT 'user',
   PRIMARY KEY (`username`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `login`
 --
 
 INSERT INTO `login` (`id`, `nome_func`, `username`, `password`, `tipo_user`) VALUES
-(1, 'Administrador Magnum Opus', 'admin', 'adminmopus', 'admin'),
-(2, 'Test User', '', '', 'user');
+(1, 'Administrador Magnum Opus', 'admin', '8ab6f36b32ce5e01a30fe502d5c8fb05', 'admin'),
+(2, 'Test User', 'TUser', '179be3d1dc6c63eb7797dde7392b5f97', 'user'),
+(4, 'User 1', 'User1', '0aa2cd1aaeddac1cd4cb655542777f6c', 'user');
 
 -- --------------------------------------------------------
 
@@ -203,8 +229,8 @@ CREATE TABLE IF NOT EXISTS `produtos` (
 --
 
 INSERT INTO `produtos` (`cod_produto`, `nome_produto`, `cod_categoria`, `cod_subcategoria`, `quant_disp`, `preco`, `valor_iva`) VALUES
-(1, 'Harley Benton PB-50 SB Vintage Series ', 4, 2, 116, '98', '13'),
-(3, 'Harley Benton TE-20HH SBK Standard Series ', 1, 1, 85, '79', '10'),
+(1, 'Harley Benton PB-50 SB Vintage Series ', 4, 2, 109, '98', '13'),
+(3, 'Harley Benton TE-20HH SBK Standard Series ', 1, 1, 83, '79', '10'),
 (4, 'Guild A-20 Bob Marley ', 1, 13, 159, '300', '39');
 
 --
