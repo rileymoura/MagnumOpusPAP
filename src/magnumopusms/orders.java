@@ -51,8 +51,10 @@ public class orders extends javax.swing.JFrame {
         ArrayList<Order> ordersList = new ArrayList<>();
         PreparedStatement ps;
         ResultSet rs;
-        String query= "SELECT E.*, C.* FROM encomendas E, clientes C "
-                +"WHERE E.cod_cliente = C.cod_cliente";
+        String query= "SELECT E.*, C.*, EE.* FROM encomendas E, clientes C"
+                + ", encomendas_estados EE "
+                +"WHERE E.cod_cliente = C.cod_cliente "
+                + "AND E.cod_estado = EE.cod_estado";
         try{
             ps = dbConnection.getConnection().prepareStatement(query);
             rs = ps.executeQuery();
@@ -86,6 +88,27 @@ public class orders extends javax.swing.JFrame {
         tableOrders.setRowSorter(trs);
         trs.setRowFilter(RowFilter.regexFilter("(?i)" + str));
     }
+
+    public int getCodEstado() throws SQLException{
+        String estado = (String) estadoComboBox.getSelectedItem();
+        Connection con = dbConnection.getConnection();
+        PreparedStatement ps;
+        ResultSet rs;
+        String query = "SELECT * FROM encomendas_estados WHERE estado = '"+estado+"' ";
+        ps = dbConnection.getConnection().prepareStatement(query);
+        rs = ps.executeQuery();
+        if(rs.next()){
+            try{
+                int cod = rs.getInt("cod_estado");
+                return cod;
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Erro - Query! Query = '"+query+"' ");
+        }return 0;
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -400,7 +423,7 @@ public class orders extends javax.swing.JFrame {
 
     private void buttonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUpdateActionPerformed
         String id = fieldId.getText();
-        String query = "UPDATE encomendas SET estado = '"+estadoComboBox.getSelectedItem()+"' WHERE cod_encomenda = '"+id+"'";
+        String query = "UPDATE encomendas SET cod_estado = '"+estadoComboBox.getSelectedItem()+"' WHERE cod_encomenda = '"+id+"'";
 
         executeSQLQuery(query, "atualizados");
         DefaultTableModel model = (DefaultTableModel) tableOrders.getModel();

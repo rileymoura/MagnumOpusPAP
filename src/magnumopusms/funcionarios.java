@@ -222,6 +222,12 @@ Connection con = null;
             }
         });
 
+        fieldPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldPasswordActionPerformed(evt);
+            }
+        });
+
         labelPassword1.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         labelPassword1.setText("Confirmar Password");
 
@@ -500,6 +506,10 @@ Connection con = null;
         String searchString = fieldProcurar.getText();
         search(searchString);
     }//GEN-LAST:event_fieldProcurarKeyReleased
+
+    private void fieldPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldPasswordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fieldPasswordActionPerformed
 
     /**
      * @param args the command line arguments

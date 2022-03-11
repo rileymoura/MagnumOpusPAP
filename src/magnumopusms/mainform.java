@@ -8,6 +8,8 @@ package magnumopusms;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.security.*; 
+import java.math.*;
 import javax.swing.JOptionPane;
 import static magnumopusms.login.fieldUsername;
 
@@ -326,6 +328,8 @@ Connection con = null;
             ps = dbConnection.getConnection().prepareStatement(query);
             rs = ps.executeQuery();
             while (rs.next()){
+                //MessageDigest m=MessageDigest.getInstance("MD5");
+                //m.update(s.getBytes(),0,s.length());
                 utilizador utilizador = new utilizador();
                 utilizador.setVisible(true);
                 utilizador.pack();
