@@ -22,6 +22,8 @@ Made with ❤️ by Spitz/Nuno Moura
 
 Socials/Contacts
 
-Email: nmoura49@gmail.com /n
-Twitter: @spitznolbutyou /n
-Instagram: @nunoomoura /n
+Email: nmoura49@gmail.com
+
+Twitter: @spitznolbutyou
+
+Instagram: @nunoomoura
