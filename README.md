@@ -1,6 +1,6 @@
 # MagnumOpusPAP
 
-**PT**
+**PT** /n
 Este repositório disponibiliza o source code e todo o material relativo ao meu projeto de PAP (Prova de aptidão Profissional) de final de 
 curso profissional (Técnico de Gestão e Programação de Sistemas Informáticos).
 
@@ -10,7 +10,7 @@ continuará disponível para livre uso e modificação do mesmo.
 
 Feito com ❤️ by Spitz/Nuno Moura
 
-**ENG**
+**ENG** /n
 This repository serves to make available the source code and the material used for my PAT (Professional Aptitude Test) project 
 for the end of my vocational course (Computer Systems Management and Programming Technician).
 
@@ -22,6 +22,6 @@ Made with ❤️ by Spitz/Nuno Moura
 
 Socials/Contacts
 
-Email: nmoura49@gmail.com
-Twitter: @spitznolbutyou
-Instagram: @nunoomoura
+Email: nmoura49@gmail.com /n
+Twitter: @spitznolbutyou /n
+Instagram: @nunoomoura /n
